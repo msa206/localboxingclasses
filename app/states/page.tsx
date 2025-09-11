@@ -1,0 +1,41 @@
+import { Metadata } from 'next'
+import Link from 'next/link'
+import Breadcrumbs from '@/components/Breadcrumbs'
+import { statesData } from '@/lib/mock-data'
+
+export const metadata: Metadata = {
+  title: 'Boxing Classes by State',
+  description: 'Browse boxing classes and gyms across all US states. Find the perfect boxing gym near you.',
+}
+
+export default async function StatesPage() {
+  return (
+    <div className="max-w-7xl mx-auto px-4 py-8">
+      <Breadcrumbs items={[{ label: 'States' }]} />
+      
+      <h1 className="text-4xl font-bold text-off-white mb-4">
+        Boxing Classes by State
+      </h1>
+      <p className="text-slate-muted mb-8">
+        Select your state to find local boxing gyms and classes
+      </p>
+      
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {statesData.map((state) => (
+          <Link
+            key={state.slug}
+            href={`/states/${state.slug}`}
+            className="group p-4 bg-fight-black/50 border border-fight-red/30 rounded-lg hover:border-fight-red transition-colors"
+          >
+            <h2 className="font-bold text-off-white group-hover:text-fight-red transition-colors">
+              {state.state}
+            </h2>
+            <p className="text-sm text-slate-muted mt-1">
+              {state.count} gyms
+            </p>
+          </Link>
+        ))}
+      </div>
+    </div>
+  )
+}
