@@ -28,31 +28,42 @@ export default function GymCard({
   const address = full_address || `${city}, ${state} ${postal_code}`
   
   return (
-    <article className="rounded-2xl border border-fight-red/40 bg-fight-black/50 p-5 hover:border-fight-red/60 transition-colors">
-      <header className="flex items-start justify-between gap-3">
-        <h2 className="text-xl font-bold text-off-white">{name}</h2>
+    <article className="group bg-white rounded-2xl border border-gray-200 p-6 shadow-sm hover:shadow-lg hover:border-fight-red/30 transition-all duration-300">
+      <header className="flex items-start justify-between gap-3 mb-3">
+        <h2 className="text-xl font-bold text-black group-hover:text-fight-red transition-colors">{name}</h2>
         {distance_mi && (
-          <span className="text-sm text-fight-red font-semibold whitespace-nowrap">
+          <span className="text-sm text-fight-red font-semibold whitespace-nowrap bg-fight-red/10 px-2 py-1 rounded-full">
             {distance_mi.toFixed(1)} mi
           </span>
         )}
       </header>
       
-      <p className="text-sm text-slate-muted mt-2">{address}</p>
+      <div className="flex items-center gap-2 text-gray-600 mb-3">
+        <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+        <p className="text-sm">{address}</p>
+      </div>
       
       {(review_stars || review_count) && (
-        <div className="mt-2 text-sm text-slate-muted">
-          {review_stars && <span className="text-yellow-500">{review_stars.toFixed(1)}★</span>}
-          {review_count && <span className="ml-1">({review_count})</span>}
+        <div className="flex items-center gap-2 mb-4">
+          <div className="flex items-center">
+            {review_stars && <span className="text-yellow-500 text-sm font-semibold">{review_stars.toFixed(1)}★</span>}
+            {review_count && <span className="text-gray-500 text-sm ml-1">({review_count} reviews)</span>}
+          </div>
         </div>
       )}
       
-      <div className="mt-4 flex flex-wrap gap-3 text-sm">
+      <div className="flex flex-wrap gap-3">
         {phone_number && (
           <a
             href={`tel:${phone_number}`}
-            className="px-4 py-2 bg-fight-red text-off-white rounded-lg hover:bg-fight-red/80 transition-colors font-semibold"
+            className="inline-flex items-center px-4 py-2 bg-fight-red text-white rounded-lg hover:bg-fight-red/90 transition-colors font-medium text-sm"
           >
+            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+            </svg>
             Call
           </a>
         )}
@@ -61,19 +72,12 @@ export default function GymCard({
             href={site}
             target="_blank"
             rel="noopener noreferrer"
-            className="px-4 py-2 border border-fight-red text-fight-red rounded-lg hover:bg-fight-red hover:text-off-white transition-colors font-semibold"
+            className="inline-flex items-center px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:border-fight-red hover:text-fight-red transition-colors font-medium text-sm"
           >
+            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9v-9m0-9v9" />
+            </svg>
             Website
-          </a>
-        )}
-        {source_url && (
-          <a
-            href={source_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-4 py-2 border border-slate-muted text-slate-muted rounded-lg hover:border-off-white hover:text-off-white transition-colors font-semibold"
-          >
-            Google Maps
           </a>
         )}
       </div>

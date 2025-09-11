@@ -2,16 +2,59 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --bg: #0B0B0B;
-  --accent: #E11D2E;
-  --text: #F8F8F8;
-  --muted: #1F2937;
-}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
-html,
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'Inter', system-ui, sans-serif;
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    max-width: 100%;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+    max-width: 100%;
+  }
+
+  body {
+    background: #FFFFFF;
+    color: #000000;
+    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', 'Roboto', sans-serif;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    max-width: 100vw;
+    position: relative;
+  }
+
+  /* Hide scrollbar completely by default */
+  html {
+    overflow-y: scroll;
+    scrollbar-width: none; /* Firefox */
+  }
+
+  html::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+
+  /* Alternative: ultra-thin invisible scrollbar */
+  body {
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  ::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+  }
+
+  /* For browsers that support it, use overlay scrollbars */
+  @supports (overflow: overlay) {
+    body {
+      overflow-y: overlay;
+    }
+  }
 }

@@ -9,16 +9,16 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        'fight-black': '#0B0B0B',
-        'fight-red': '#E11D2E',
-        'off-white': '#F8F8F8',
-        'slate-muted': '#1F2937',
+        'fight-black': '#000000',
+        'fight-red': '#DC2626',
+        'off-white': '#FFFFFF',
+        'slate-muted': '#6B7280',
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
       },
     },
   },
-  plugins: [],
 }
+
 export default config

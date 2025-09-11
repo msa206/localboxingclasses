@@ -21,21 +21,27 @@ export default function ZipSearchBar() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-      <input
-        type="text"
-        value={zip}
-        onChange={handleZipChange}
-        placeholder="Enter ZIP code"
-        className="flex-1 px-4 py-3 bg-fight-black border border-fight-red/40 rounded-lg text-off-white placeholder-slate-muted focus:outline-none focus:border-fight-red"
-        maxLength={5}
-        pattern="\d{5}"
-        required
-      />
+    <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-4 max-w-2xl mx-auto">
+      <div className="relative flex-1">
+        <input
+          type="text"
+          value={zip}
+          onChange={handleZipChange}
+          placeholder="Enter ZIP code"
+          className="w-full px-6 py-4 pl-12 bg-white border border-gray-300 rounded-xl text-black placeholder-gray-500 focus:outline-none focus:border-fight-red focus:bg-gray-50 transition-all"
+          maxLength={5}
+          pattern="\d{5}"
+          required
+        />
+        <svg className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+      </div>
       <select
         value={radius}
         onChange={(e) => setRadius(e.target.value)}
-        className="px-4 py-3 bg-fight-black border border-fight-red/40 rounded-lg text-off-white focus:outline-none focus:border-fight-red"
+        className="px-6 py-4 bg-white border border-gray-300 rounded-xl text-black focus:outline-none focus:border-fight-red focus:bg-gray-50 transition-all cursor-pointer"
       >
         <option value="10">10 miles</option>
         <option value="25">25 miles</option>
@@ -43,7 +49,7 @@ export default function ZipSearchBar() {
       </select>
       <button
         type="submit"
-        className="px-6 py-3 bg-fight-red text-off-white font-bold rounded-lg hover:bg-fight-red/80 transition-colors"
+        className="px-8 py-4 bg-fight-red text-white font-bold rounded-xl hover:bg-fight-red/90 transition-all duration-300 hover:scale-105 shadow-lg shadow-fight-red/20"
       >
         Search
       </button>

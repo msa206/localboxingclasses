@@ -38,32 +38,34 @@ export default async function ClassesPage({ searchParams }: { searchParams: Sear
 
   if (!zip) {
     return (
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <Breadcrumbs items={[{ label: 'ZIP Search' }]} />
-        
-        <h1 className="text-4xl font-bold text-off-white mb-4">
-          Search Boxing Classes by ZIP Code
-        </h1>
-        <p className="text-slate-muted mb-8">
-          Enter your ZIP code to find boxing gyms within your preferred distance
-        </p>
-        
-        <div className="max-w-2xl mx-auto">
-          <ZipSearchBar />
-        </div>
-        
-        <div className="mt-16 grid gap-8 md:grid-cols-3">
-          <div className="text-center">
-            <div className="text-3xl font-bold text-fight-red mb-2">5,000+</div>
-            <p className="text-slate-muted">Boxing Gyms Nationwide</p>
+      <div className="bg-white pb-16">
+        <div className="max-w-7xl mx-auto px-4 py-8">
+          <Breadcrumbs items={[{ label: 'ZIP Search' }]} />
+          
+          <h1 className="text-4xl font-bold text-black mb-4">
+            Search Boxing Classes by ZIP Code
+          </h1>
+          <p className="text-gray-600 mb-8">
+            Enter your ZIP code to find boxing gyms within your preferred distance
+          </p>
+          
+          <div className="max-w-2xl mx-auto">
+            <ZipSearchBar />
           </div>
-          <div className="text-center">
-            <div className="text-3xl font-bold text-fight-red mb-2">50 States</div>
-            <p className="text-slate-muted">Complete Coverage</p>
-          </div>
-          <div className="text-center">
-            <div className="text-3xl font-bold text-fight-red mb-2">Local</div>
-            <p className="text-slate-muted">Find Gyms Near You</p>
+          
+          <div className="mt-16 grid gap-8 md:grid-cols-3">
+            <div className="text-center">
+              <div className="text-3xl font-bold text-fight-red mb-2">5,000+</div>
+              <p className="text-gray-600">Boxing Gyms Nationwide</p>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-fight-red mb-2">50 States</div>
+              <p className="text-gray-600">Complete Coverage</p>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-fight-red mb-2">Local</div>
+              <p className="text-gray-600">Find Gyms Near You</p>
+            </div>
           </div>
         </div>
       </div>
@@ -79,24 +81,25 @@ export default async function ClassesPage({ searchParams }: { searchParams: Sear
   const hasMore = searchResults.length === limit
   
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
-      <Breadcrumbs items={[
-        { label: 'ZIP Search', href: '/classes' },
-        { label: `Results for ${zip}` }
-      ]} />
-      
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold text-off-white mb-4">
-          Boxing Classes near {zip}
-        </h1>
-        <p className="text-slate-muted mb-6">
-          Showing gyms within {radius} miles • {searchResults.length} results
-        </p>
+    <div className="bg-white pb-16">
+      <div className="max-w-7xl mx-auto px-4 py-8">
+        <Breadcrumbs items={[
+          { label: 'ZIP Search', href: '/classes' },
+          { label: `Results for ${zip}` }
+        ]} />
         
-        <div className="max-w-2xl">
-          <ZipSearchBar />
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold text-black mb-4">
+            Boxing Classes near {zip}
+          </h1>
+          <p className="text-gray-600 mb-6">
+            Showing gyms within {radius} miles • {searchResults.length} results
+          </p>
+          
+          <div className="max-w-2xl">
+            <ZipSearchBar />
+          </div>
         </div>
-      </div>
       
       {searchResults.length > 0 ? (
         <>
@@ -123,6 +126,7 @@ export default async function ClassesPage({ searchParams }: { searchParams: Sear
           }}
         />
       )}
+      </div>
     </div>
   )
 }
