@@ -32,10 +32,10 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative py-32 px-4 overflow-hidden">
         <div 
-          className="absolute inset-0 bg-cover bg-no-repeat blur-sm scale-105" 
+          className="absolute inset-0 bg-cover bg-no-repeat blur-sm scale-125" 
           style={{
             backgroundImage: 'url(/two-boxers-sparring.webp)',
-            backgroundPosition: 'calc(50% + 30px) center'
+            backgroundPosition: 'calc(50% + 100px) calc(50% + 60px)'
           }}
         ></div>
         <div className="absolute inset-0 bg-black/60"></div>
@@ -56,7 +56,7 @@ export default function Home() {
       <section className="py-20 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold mb-4 text-black">Search Boxing Classes in Your State</h2>
+            <h2 className="text-4xl font-bold mb-4 text-black">Search Local Boxing Classes by State</h2>
             <p className="text-gray-600">Browse boxing gyms by state</p>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
