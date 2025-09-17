@@ -3,14 +3,17 @@ import { notFound } from 'next/navigation'
 import Breadcrumbs from '@/components/Breadcrumbs'
 import GymCard from '@/components/GymCard'
 import EmptyState from '@/components/EmptyState'
-import { statesData, mockGyms, citiesByState } from '@/lib/mock-data'
+import { getStates, getStateBySlug, getCityBySlug, getGymsByCity, getCitiesByState } from '@/lib/data'
 
 export async function generateStaticParams() {
+  const states = await getStates()
   const params = []
-  for (const [stateSlug, cities] of Object.entries(citiesByState)) {
+
+  for (const state of states) {
+    const cities = await getCitiesByState(state.slug)
     for (const city of cities) {
       params.push({
-        state: stateSlug,
+        state: state.slug,
         city: city.slug,
       })
     }
@@ -18,38 +21,38 @@ export async function generateStaticParams() {
   return params
 }
 
-export async function generateMetadata({ 
-  params 
-}: { 
-  params: Promise<{ state: string; city: string }> 
+export async function generateMetadata({
+  params
+}: {
+  params: Promise<{ state: string; city: string }>
 }): Promise<Metadata> {
   const { state, city } = await params
-  const stateData = statesData.find(s => s.slug === state)
-  const cities = citiesByState[state] || []
-  const cityData = cities.find(c => c.slug === city)
-  
+  const stateData = await getStateBySlug(state)
+  const cityData = await getCityBySlug(state, city)
+
   if (!stateData || !cityData) return {}
-  
+
   return {
     title: `Boxing Classes in ${cityData.name}, ${stateData.state}`,
     description: `Discover ${cityData.count} boxing gyms and classes in ${cityData.name}, ${stateData.state}. Find the perfect boxing gym for beginners, kids, and experienced fighters.`,
   }
 }
 
-export default async function CityPage({ 
-  params 
-}: { 
-  params: Promise<{ state: string; city: string }> 
+export default async function CityPage({
+  params
+}: {
+  params: Promise<{ state: string; city: string }>
 }) {
   const { state, city } = await params
-  const stateData = statesData.find(s => s.slug === state)
-  const cities = citiesByState[state] || []
-  const cityData = cities.find(c => c.slug === city)
-  
+  const stateData = await getStateBySlug(state)
+  const cityData = await getCityBySlug(state, city)
+
   if (!stateData || !cityData) {
     notFound()
   }
-  
+
+  const gyms = await getGymsByCity(state, city)
+
   return (
     <div className="min-h-screen bg-white">
       <div className="max-w-7xl mx-auto px-4 py-8">
@@ -67,13 +70,13 @@ export default async function CityPage({
         </p>
         
         <section>
-          <div className="grid gap-6 md:grid-cols-2">
-            {mockGyms.length > 0 ? (
-              mockGyms.map((gym) => (
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {gyms.length > 0 ? (
+              gyms.map((gym) => (
                 <GymCard key={gym.id} {...gym} />
               ))
             ) : (
-              <div className="col-span-2">
+              <div className="col-span-full">
                 <EmptyState
                   title="No gyms found"
                   description={`We couldn't find any boxing gyms in ${cityData.name} yet.`}

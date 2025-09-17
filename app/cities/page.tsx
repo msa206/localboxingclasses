@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
 import Breadcrumbs from '@/components/Breadcrumbs'
-import { citiesByLetter, cityStats } from '@/lib/cities-data'
+import { getAllCities } from '@/lib/data'
 
 export const metadata: Metadata = {
   title: 'Boxing Classes by City',
@@ -10,7 +10,37 @@ export const metadata: Metadata = {
 
 const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
 
-export default function CitiesPage() {
+export default async function CitiesPage() {
+  // Fetch real cities data from database
+  const allCities = await getAllCities()
+
+  // Group cities by first letter
+  const citiesByLetter = allCities.reduce((acc, city) => {
+    const firstLetter = city.name[0].toUpperCase()
+    if (!acc[firstLetter]) {
+      acc[firstLetter] = []
+    }
+    acc[firstLetter].push({
+      name: city.name,
+      state: city.state,
+      stateSlug: city.stateSlug,
+      citySlug: city.slug,
+      count: city.count
+    })
+    return acc
+  }, {} as Record<string, Array<{name: string, state: string, stateSlug: string, citySlug: string, count: number}>>)
+
+  // Sort cities within each letter group
+  Object.keys(citiesByLetter).forEach(letter => {
+    citiesByLetter[letter].sort((a, b) => a.name.localeCompare(b.name))
+  })
+
+  // Calculate statistics
+  const cityStats = {
+    totalCities: allCities.length,
+    totalGyms: allCities.reduce((sum, city) => sum + city.count, 0),
+    totalStates: new Set(allCities.map(city => city.state)).size,
+  }
   return (
     <div className="min-h-screen bg-white">
       <div className="max-w-7xl mx-auto px-4 py-8">

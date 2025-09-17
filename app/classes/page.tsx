@@ -4,7 +4,7 @@ import GymCard from '@/components/GymCard'
 import Pagination from '@/components/Pagination'
 import EmptyState from '@/components/EmptyState'
 import ZipSearchBar from '@/components/ZipSearchBar'
-import { mockGyms } from '@/lib/mock-data'
+import { searchGymsByZip } from '@/lib/data'
 
 export const runtime = 'edge'
 export const dynamic = 'force-dynamic'
@@ -72,12 +72,14 @@ export default async function ClassesPage({ searchParams }: { searchParams: Sear
     )
   }
 
-  // Mock search results with distance
-  const searchResults = mockGyms.map((gym, index) => ({
-    ...gym,
-    distance_mi: Math.round((index + 1) * 2.5 * 10) / 10
-  }))
-  
+  // Fetch real search results from database
+  const { gyms: searchResults, total } = await searchGymsByZip(
+    zip,
+    radius,
+    limit,
+    offset
+  )
+
   const hasMore = searchResults.length === limit
   
   return (
@@ -103,12 +105,12 @@ export default async function ClassesPage({ searchParams }: { searchParams: Sear
       
       {searchResults.length > 0 ? (
         <>
-          <div className="grid gap-6 md:grid-cols-2">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {searchResults.map((gym) => (
               <GymCard key={gym.id} {...gym} />
             ))}
           </div>
-          
+
           <Pagination
             currentPage={page}
             hasMore={hasMore}

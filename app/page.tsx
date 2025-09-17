@@ -1,32 +1,31 @@
 import Link from 'next/link'
 import ZipSearchBar from '@/components/ZipSearchBar'
-import { statesData } from '@/lib/mock-data'
+import { getStates, getAllCities } from '@/lib/data'
 
-// Top 20 cities by gym count in descending order
-const topCities = [
-  { name: 'New York, NY', state: 'new-york', city: 'new-york', count: 125 },
-  { name: 'Los Angeles, CA', state: 'california', city: 'los-angeles', count: 85 },
-  { name: 'Chicago, IL', state: 'illinois', city: 'chicago', count: 75 },
-  { name: 'Houston, TX', state: 'texas', city: 'houston', count: 65 },
-  { name: 'Philadelphia, PA', state: 'pennsylvania', city: 'philadelphia', count: 58 },
-  { name: 'Phoenix, AZ', state: 'arizona', city: 'phoenix', count: 55 },
-  { name: 'Dallas, TX', state: 'texas', city: 'dallas', count: 52 },
-  { name: 'Miami, FL', state: 'florida', city: 'miami', count: 48 },
-  { name: 'San Francisco, CA', state: 'california', city: 'san-francisco', count: 45 },
-  { name: 'Brooklyn, NY', state: 'new-york', city: 'brooklyn', count: 45 },
-  { name: 'Boston, MA', state: 'massachusetts', city: 'boston', count: 42 },
-  { name: 'Atlanta, GA', state: 'georgia', city: 'atlanta', count: 40 },
-  { name: 'San Diego, CA', state: 'california', city: 'san-diego', count: 38 },
-  { name: 'Austin, TX', state: 'texas', city: 'austin', count: 38 },
-  { name: 'Seattle, WA', state: 'washington', city: 'seattle', count: 36 },
-  { name: 'San Antonio, TX', state: 'texas', city: 'san-antonio', count: 35 },
-  { name: 'Denver, CO', state: 'colorado', city: 'denver', count: 32 },
-  { name: 'Las Vegas, NV', state: 'nevada', city: 'las-vegas', count: 30 },
-  { name: 'Portland, OR', state: 'oregon', city: 'portland', count: 28 },
-  { name: 'San Jose, CA', state: 'california', city: 'san-jose', count: 28 },
-]
+export default async function Home() {
+  // Fetch real data from Supabase
+  const [statesData, allCities] = await Promise.all([
+    getStates(),
+    getAllCities()
+  ])
 
-export default function Home() {
+  // Get top 20 cities by gym count
+  const topCities = allCities
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 20)
+    .map(city => {
+      // Find the state abbreviation from statesData
+      const stateInfo = statesData.find(s => s.state === city.state)
+      const stateAbbr = stateInfo?.abbr || city.state.substring(0, 2).toUpperCase()
+
+      return {
+        name: `${city.name}, ${stateAbbr}`,
+        state: city.stateSlug,
+        city: city.slug,
+        count: city.count
+      }
+    })
+
   return (
     <div className="bg-gradient-to-b from-gray-100 to-white">
       {/* Hero Section */}

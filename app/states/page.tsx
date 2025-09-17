@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
 import Breadcrumbs from '@/components/Breadcrumbs'
-import { statesData } from '@/lib/mock-data'
+import { getStates } from '@/lib/data'
 
 export const metadata: Metadata = {
   title: 'Boxing Classes by State',
@@ -9,18 +9,20 @@ export const metadata: Metadata = {
 }
 
 export default async function StatesPage() {
+  const statesData = await getStates()
+
   return (
     <div className="min-h-screen bg-white">
       <div className="max-w-7xl mx-auto px-4 py-8">
         <Breadcrumbs items={[{ label: 'States' }]} />
-        
+
         <h1 className="text-4xl font-bold text-black mb-4">
           Boxing Classes by State
         </h1>
         <p className="text-gray-600 mb-8">
           Select your state to find local boxing gyms and classes
         </p>
-        
+
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {statesData.map((state) => (
             <Link

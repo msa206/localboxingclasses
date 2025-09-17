@@ -1,0 +1,289 @@
+import { supabaseClient } from '@/lib/supabase-client'
+
+export type Gym = {
+  id: string
+  name: string
+  site: string | null
+  phone_number: string | null
+  full_address: string
+  street: string | null
+  city: string
+  state: string
+  postal_code: string | null
+  review_count: number | null
+  review_stars: number | null
+  working_hours: string | null
+  latitude: number | null
+  longitude: number | null
+  source_url: string | null
+  distance_mi?: number
+}
+
+export type StateData = {
+  state: string
+  abbr: string
+  slug: string
+  count: number
+}
+
+export type CityData = {
+  name: string
+  slug: string
+  count: number
+  state: string
+  stateSlug: string
+}
+
+function stateNameToSlug(stateName: string): string {
+  return stateName.toLowerCase().replace(/\s+/g, '-')
+}
+
+function cityNameToSlug(cityName: string): string {
+  return cityName.toLowerCase().replace(/\s+/g, '-')
+}
+
+const stateAbbreviations: Record<string, string> = {
+  'Alabama': 'AL', 'Alaska': 'AK', 'Arizona': 'AZ', 'Arkansas': 'AR', 'California': 'CA',
+  'Colorado': 'CO', 'Connecticut': 'CT', 'Delaware': 'DE', 'Florida': 'FL', 'Georgia': 'GA',
+  'Hawaii': 'HI', 'Idaho': 'ID', 'Illinois': 'IL', 'Indiana': 'IN', 'Iowa': 'IA',
+  'Kansas': 'KS', 'Kentucky': 'KY', 'Louisiana': 'LA', 'Maine': 'ME', 'Maryland': 'MD',
+  'Massachusetts': 'MA', 'Michigan': 'MI', 'Minnesota': 'MN', 'Mississippi': 'MS', 'Missouri': 'MO',
+  'Montana': 'MT', 'Nebraska': 'NE', 'Nevada': 'NV', 'New Hampshire': 'NH', 'New Jersey': 'NJ',
+  'New Mexico': 'NM', 'New York': 'NY', 'North Carolina': 'NC', 'North Dakota': 'ND', 'Ohio': 'OH',
+  'Oklahoma': 'OK', 'Oregon': 'OR', 'Pennsylvania': 'PA', 'Rhode Island': 'RI', 'South Carolina': 'SC',
+  'South Dakota': 'SD', 'Tennessee': 'TN', 'Texas': 'TX', 'Utah': 'UT', 'Vermont': 'VT',
+  'Virginia': 'VA', 'Washington': 'WA', 'West Virginia': 'WV', 'Wisconsin': 'WI', 'Wyoming': 'WY',
+  'District of Columbia': 'DC', 'DC': 'DC'
+}
+
+// Reverse mapping: abbreviation to full name
+const abbreviationToState: Record<string, string> = Object.entries(stateAbbreviations).reduce(
+  (acc, [name, abbr]) => ({ ...acc, [abbr]: name }),
+  {}
+)
+
+export async function getStates(): Promise<StateData[]> {
+  try {
+    const { data, error } = await supabaseClient
+      .from('lbc_boxing_gyms')
+      .select('state')
+      .not('state', 'is', null)
+
+    if (error) {
+      console.error('Error fetching states:', error)
+      return []
+    }
+
+    const stateCounts = data.reduce((acc, gym) => {
+      const stateAbbr = gym.state
+      if (stateAbbr) {
+        acc[stateAbbr] = (acc[stateAbbr] || 0) + 1
+      }
+      return acc
+    }, {} as Record<string, number>)
+
+    return Object.entries(stateCounts)
+      .map(([stateAbbr, count]) => {
+        const fullStateName = abbreviationToState[stateAbbr] || stateAbbr
+        return {
+          state: fullStateName,
+          abbr: stateAbbr,
+          slug: stateNameToSlug(fullStateName),
+          count
+        }
+      })
+      .sort((a, b) => a.state.localeCompare(b.state))
+  } catch (error) {
+    console.error('Error in getStates:', error)
+    return []
+  }
+}
+
+export async function getGymsByState(stateSlug: string): Promise<Gym[]> {
+  try {
+    const stateName = Object.keys(stateAbbreviations).find(
+      state => stateNameToSlug(state) === stateSlug
+    )
+
+    if (!stateName) {
+      return []
+    }
+
+    const stateAbbr = stateAbbreviations[stateName]
+
+    const { data, error } = await supabaseClient
+      .from('lbc_boxing_gyms')
+      .select('*')
+      .eq('state', stateAbbr)
+      .order('city', { ascending: true })
+      .order('name', { ascending: true })
+
+    if (error) {
+      console.error('Error fetching gyms by state:', error)
+      return []
+    }
+
+    return data || []
+  } catch (error) {
+    console.error('Error in getGymsByState:', error)
+    return []
+  }
+}
+
+export async function getGymsByCity(stateSlug: string, citySlug: string): Promise<Gym[]> {
+  try {
+    const stateName = Object.keys(stateAbbreviations).find(
+      state => stateNameToSlug(state) === stateSlug
+    )
+
+    if (!stateName) {
+      return []
+    }
+
+    const stateAbbr = stateAbbreviations[stateName]
+
+    const { data: allCityGyms, error } = await supabaseClient
+      .from('lbc_boxing_gyms')
+      .select('*')
+      .eq('state', stateAbbr)
+
+    if (error) {
+      console.error('Error fetching gyms by city:', error)
+      return []
+    }
+
+    const cityGyms = allCityGyms?.filter(gym =>
+      cityNameToSlug(gym.city) === citySlug
+    ) || []
+
+    return cityGyms.sort((a, b) => (a.name || '').localeCompare(b.name || ''))
+  } catch (error) {
+    console.error('Error in getGymsByCity:', error)
+    return []
+  }
+}
+
+export async function getCitiesByState(stateSlug: string): Promise<CityData[]> {
+  try {
+    const stateName = Object.keys(stateAbbreviations).find(
+      state => stateNameToSlug(state) === stateSlug
+    )
+
+    if (!stateName) {
+      return []
+    }
+
+    const stateAbbr = stateAbbreviations[stateName]
+
+    const { data, error } = await supabaseClient
+      .from('lbc_boxing_gyms')
+      .select('city')
+      .eq('state', stateAbbr)
+      .not('city', 'is', null)
+
+    if (error) {
+      console.error('Error fetching cities by state:', error)
+      return []
+    }
+
+    const cityCounts = data.reduce((acc, gym) => {
+      const city = gym.city
+      if (city) {
+        acc[city] = (acc[city] || 0) + 1
+      }
+      return acc
+    }, {} as Record<string, number>)
+
+    return Object.entries(cityCounts)
+      .map(([city, count]) => ({
+        name: city,
+        slug: cityNameToSlug(city),
+        count,
+        state: stateName,
+        stateSlug
+      }))
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 10)
+  } catch (error) {
+    console.error('Error in getCitiesByState:', error)
+    return []
+  }
+}
+
+export async function searchGymsByZip(
+  zip: string,
+  radiusMiles: number = 25,
+  limit: number = 50,
+  offset: number = 0
+): Promise<{ gyms: Gym[], total: number }> {
+  try {
+    const { data, error, count } = await supabaseClient
+      .rpc('gyms_near_zip', {
+        p_zip: zip,
+        p_radius_mi: radiusMiles,
+        p_limit: limit,
+        p_offset: offset
+      })
+
+    if (error) {
+      console.error('Error searching gyms by ZIP:', error)
+      return { gyms: [], total: 0 }
+    }
+
+    return {
+      gyms: data || [],
+      total: count || 0
+    }
+  } catch (error) {
+    console.error('Error in searchGymsByZip:', error)
+    return { gyms: [], total: 0 }
+  }
+}
+
+export async function getAllCities(): Promise<CityData[]> {
+  try {
+    const { data, error } = await supabaseClient
+      .from('lbc_boxing_gyms')
+      .select('city, state')
+      .not('city', 'is', null)
+      .not('state', 'is', null)
+
+    if (error) {
+      console.error('Error fetching all cities:', error)
+      return []
+    }
+
+    const cityStateCount = data.reduce((acc, gym) => {
+      const key = `${gym.city}|${gym.state}`
+      acc[key] = (acc[key] || 0) + 1
+      return acc
+    }, {} as Record<string, number>)
+
+    return Object.entries(cityStateCount)
+      .map(([key, count]) => {
+        const [city, stateAbbr] = key.split('|')
+        const fullStateName = abbreviationToState[stateAbbr] || stateAbbr
+        return {
+          name: city,
+          slug: cityNameToSlug(city),
+          count,
+          state: fullStateName,
+          stateSlug: stateNameToSlug(fullStateName)
+        }
+      })
+      .sort((a, b) => b.count - a.count)
+  } catch (error) {
+    console.error('Error in getAllCities:', error)
+    return []
+  }
+}
+
+export async function getStateBySlug(stateSlug: string): Promise<StateData | null> {
+  const states = await getStates()
+  return states.find(s => s.slug === stateSlug) || null
+}
+
+export async function getCityBySlug(stateSlug: string, citySlug: string): Promise<CityData | null> {
+  const cities = await getCitiesByState(stateSlug)
+  return cities.find(c => c.slug === citySlug) || null
+}

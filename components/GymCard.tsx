@@ -1,15 +1,15 @@
 interface GymCardProps {
   name: string
-  full_address?: string
-  city?: string
-  state?: string
-  postal_code?: string
-  phone_number?: string
-  site?: string
-  source_url?: string
-  review_stars?: number
-  review_count?: number
-  distance_mi?: number
+  full_address?: string | null
+  city?: string | null
+  state?: string | null
+  postal_code?: string | null
+  phone_number?: string | null
+  site?: string | null
+  source_url?: string | null
+  review_stars?: number | null
+  review_count?: number | null
+  distance_mi?: number | null
 }
 
 export default function GymCard({
