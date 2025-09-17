@@ -1,7 +1,7 @@
 import { supabaseClient } from '@/lib/supabase-client'
 
 export type Gym = {
-  id: string
+  id: number
   name: string
   site: string | null
   phone_number: string | null
@@ -17,6 +17,11 @@ export type Gym = {
   longitude: number | null
   source_url: string | null
   distance_mi?: number
+  offers_kids?: boolean | null
+  offers_kickboxing?: boolean | null
+  offers_free_trial?: boolean | null
+  beginner_friendly?: boolean | null
+  women_focused?: boolean | null
 }
 
 export type StateData = {
@@ -163,6 +168,29 @@ export async function getGymsByCity(stateSlug: string, citySlug: string): Promis
   }
 }
 
+export async function getKidsBoxingGyms(city: string, state: string): Promise<Gym[]> {
+  try {
+    const { data, error } = await supabaseClient
+      .from('lbc_boxing_gyms')
+      .select('*')
+      .eq('city', city)
+      .eq('state', state)
+      .eq('offers_kids', true)
+      .order('review_stars', { ascending: false, nullsFirst: false })
+      .order('name', { ascending: true })
+
+    if (error) {
+      console.error('Error fetching kids boxing gyms:', error)
+      return []
+    }
+
+    return data || []
+  } catch (error) {
+    console.error('Error in getKidsBoxingGyms:', error)
+    return []
+  }
+}
+
 export async function getCitiesByState(stateSlug: string): Promise<CityData[]> {
   try {
     const stateName = Object.keys(stateAbbreviations).find(
@@ -218,7 +246,7 @@ export async function searchGymsByZip(
 ): Promise<{ gyms: Gym[], total: number }> {
   try {
     const { data, error, count } = await supabaseClient
-      .rpc('gyms_near_zip', {
+      .rpc('lbc_gyms_near_zip', {
         p_zip: zip,
         p_radius_mi: radiusMiles,
         p_limit: limit,

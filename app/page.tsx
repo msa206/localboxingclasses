@@ -9,22 +9,55 @@ export default async function Home() {
     getAllCities()
   ])
 
-  // Get top 20 cities by gym count
-  const topCities = allCities
-    .sort((a, b) => b.count - a.count)
-    .slice(0, 20)
-    .map(city => {
-      // Find the state abbreviation from statesData
-      const stateInfo = statesData.find(s => s.state === city.state)
-      const stateAbbr = stateInfo?.abbr || city.state.substring(0, 2).toUpperCase()
+  // Priority cities to show first
+  const priorityCities = [
+    'New York',
+    'Houston',
+    'Brooklyn',
+    'Philadelphia',
+    'Las Vegas',
+    'Atlanta',
+    'Boston'
+  ]
 
-      return {
-        name: `${city.name}, ${stateAbbr}`,
-        state: city.stateSlug,
-        city: city.slug,
-        count: city.count
-      }
-    })
+  // Process all cities with state abbreviations
+  const processedCities = allCities.map(city => {
+    const stateInfo = statesData.find(s => s.state === city.state)
+    const stateAbbr = stateInfo?.abbr || city.state.substring(0, 2).toUpperCase()
+    return {
+      name: `${city.name}, ${stateAbbr}`,
+      cityName: city.name,
+      state: city.stateSlug,
+      city: city.slug,
+      count: city.count
+    }
+  })
+
+  // Separate priority cities and others
+  const prioritySet = new Set(priorityCities.map(c => c.toLowerCase()))
+  const priorityCityData: typeof processedCities = []
+  const otherCities: typeof processedCities = []
+
+  processedCities.forEach(city => {
+    if (prioritySet.has(city.cityName.toLowerCase())) {
+      priorityCityData.push(city)
+    } else {
+      otherCities.push(city)
+    }
+  })
+
+  // Sort priority cities by the defined order
+  priorityCityData.sort((a, b) => {
+    const aIndex = priorityCities.findIndex(c => c.toLowerCase() === a.cityName.toLowerCase())
+    const bIndex = priorityCities.findIndex(c => c.toLowerCase() === b.cityName.toLowerCase())
+    return aIndex - bIndex
+  })
+
+  // Sort other cities by gym count
+  otherCities.sort((a, b) => b.count - a.count)
+
+  // Combine priority cities first, then others (up to 20 total)
+  const topCities = [...priorityCityData, ...otherCities].slice(0, 20)
 
   return (
     <div className="bg-gradient-to-b from-gray-100 to-white">
@@ -48,6 +81,19 @@ export default async function Home() {
             Search by ZIP code or browse by location.
           </p>
           <ZipSearchBar />
+
+          {/* Kids Boxing CTA */}
+          <div className="mt-8">
+            <Link
+              href="/boxing/kids"
+              className="inline-flex items-center px-8 py-4 bg-white text-fight-red font-bold rounded-xl hover:bg-gray-100 transition-all duration-300 hover:scale-105 shadow-lg"
+            >
+              <svg className="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+              </svg>
+              Kids Boxing Gyms
+            </Link>
+          </div>
         </div>
       </section>
 

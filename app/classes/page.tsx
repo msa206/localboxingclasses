@@ -52,21 +52,6 @@ export default async function ClassesPage({ searchParams }: { searchParams: Sear
           <div className="max-w-2xl mx-auto">
             <ZipSearchBar />
           </div>
-          
-          <div className="mt-16 grid gap-8 md:grid-cols-3">
-            <div className="text-center">
-              <div className="text-3xl font-bold text-fight-red mb-2">5,000+</div>
-              <p className="text-gray-600">Boxing Gyms Nationwide</p>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-fight-red mb-2">50 States</div>
-              <p className="text-gray-600">Complete Coverage</p>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-fight-red mb-2">Local</div>
-              <p className="text-gray-600">Find Gyms Near You</p>
-            </div>
-          </div>
         </div>
       </div>
     )

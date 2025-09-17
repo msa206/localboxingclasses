@@ -30,9 +30,16 @@ export default async function CitiesPage() {
     return acc
   }, {} as Record<string, Array<{name: string, state: string, stateSlug: string, citySlug: string, count: number}>>)
 
-  // Sort cities within each letter group
+  // Sort cities within each letter group by gym count (descending), then by name
   Object.keys(citiesByLetter).forEach(letter => {
-    citiesByLetter[letter].sort((a, b) => a.name.localeCompare(b.name))
+    citiesByLetter[letter].sort((a, b) => {
+      // First sort by count (descending)
+      if (b.count !== a.count) {
+        return b.count - a.count
+      }
+      // If counts are equal, sort alphabetically
+      return a.name.localeCompare(b.name)
+    })
   })
 
   // Calculate statistics

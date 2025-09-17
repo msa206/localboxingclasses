@@ -28,24 +28,24 @@ export default function GymCard({
   const address = full_address || `${city}, ${state} ${postal_code}`
   
   return (
-    <article className="group bg-white rounded-2xl border border-gray-200 p-6 shadow-sm hover:shadow-lg hover:border-fight-red/30 transition-all duration-300">
-      <header className="flex items-start justify-between gap-3 mb-3">
-        <h2 className="text-xl font-bold text-black group-hover:text-fight-red transition-colors">{name}</h2>
+    <article className="group bg-white rounded-2xl border border-gray-200 p-6 shadow-sm hover:shadow-lg hover:border-fight-red/30 transition-all duration-300 flex flex-col h-full">
+      <header className="flex items-start justify-between gap-3 mb-3 min-h-[3.5rem]">
+        <h2 className="text-xl font-bold text-black group-hover:text-fight-red transition-colors line-clamp-2">{name}</h2>
         {distance_mi && (
-          <span className="text-sm text-fight-red font-semibold whitespace-nowrap bg-fight-red/10 px-2 py-1 rounded-full">
+          <span className="text-sm text-fight-red font-semibold whitespace-nowrap bg-fight-red/10 px-2 py-1 rounded-full flex-shrink-0">
             {distance_mi.toFixed(1)} mi
           </span>
         )}
       </header>
-      
-      <div className="flex items-center gap-2 text-gray-600 mb-3">
-        <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+
+      <div className="flex items-start gap-2 text-gray-600 mb-3 min-h-[2.5rem]">
+        <svg className="w-4 h-4 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
         </svg>
-        <p className="text-sm">{address}</p>
+        <p className="text-sm line-clamp-2">{address}</p>
       </div>
-      
+
       {(review_stars || review_count) && (
         <div className="flex items-center gap-2 mb-4">
           <div className="flex items-center">
@@ -54,8 +54,11 @@ export default function GymCard({
           </div>
         </div>
       )}
-      
-      <div className="flex flex-wrap gap-3">
+
+      {/* Spacer to push buttons to bottom */}
+      <div className="flex-grow"></div>
+
+      <div className="flex flex-wrap gap-3 mt-auto">
         {phone_number && (
           <a
             href={`tel:${phone_number}`}
@@ -74,9 +77,7 @@ export default function GymCard({
             rel="noopener noreferrer"
             className="inline-flex items-center px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:border-fight-red hover:text-fight-red transition-colors font-medium text-sm"
           >
-            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9v-9m0-9v9" />
-            </svg>
+            <img src="/website_icon.svg" alt="Website" className="mr-2" style={{ width: '16.64px', height: '16.64px' }} />
             Website
           </a>
         )}
