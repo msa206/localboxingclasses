@@ -245,7 +245,7 @@ export async function searchGymsByZip(
   offset: number = 0
 ): Promise<{ gyms: Gym[], total: number }> {
   try {
-    const { data, error, count } = await supabaseClient
+    const { data, error } = await supabaseClient
       .rpc('lbc_gyms_near_zip', {
         p_zip: zip,
         p_radius_mi: radiusMiles,
@@ -258,9 +258,21 @@ export async function searchGymsByZip(
       return { gyms: [], total: 0 }
     }
 
+    // Transform the data to match our Gym type
+    // The RPC returns postal_code as bigint, but we need it as string
+    const gyms: Gym[] = (data || []).map((gym: any) => ({
+      ...gym,
+      postal_code: gym.postal_code ? String(gym.postal_code) : null,
+      review_count: gym.review_count ? Number(gym.review_count) : null,
+      working_hours: gym.working_hours ? JSON.stringify(gym.working_hours) : null
+    }))
+
+    // Since RPC doesn't support count, we'll estimate based on returned results
+    const total = gyms.length === limit ? gyms.length * 2 : gyms.length
+
     return {
-      gyms: data || [],
-      total: count || 0
+      gyms,
+      total
     }
   } catch (error) {
     console.error('Error in searchGymsByZip:', error)
@@ -311,7 +323,95 @@ export async function getStateBySlug(stateSlug: string): Promise<StateData | nul
   return states.find(s => s.slug === stateSlug) || null
 }
 
+export async function getStateByAbbr(stateAbbr: string): Promise<StateData | null> {
+  const states = await getStates()
+  return states.find(s => s.abbr.toLowerCase() === stateAbbr.toLowerCase()) || null
+}
+
 export async function getCityBySlug(stateSlug: string, citySlug: string): Promise<CityData | null> {
   const cities = await getCitiesByState(stateSlug)
   return cities.find(c => c.slug === citySlug) || null
+}
+
+export async function getGymsByStateAbbr(stateAbbr: string): Promise<Gym[]> {
+  try {
+    const { data, error } = await supabaseClient
+      .from('lbc_boxing_gyms')
+      .select('*')
+      .eq('state', stateAbbr.toUpperCase())
+      .order('city', { ascending: true })
+      .order('name', { ascending: true })
+
+    if (error) {
+      console.error('Error fetching gyms by state abbr:', error)
+      return []
+    }
+
+    return data || []
+  } catch (error) {
+    console.error('Error in getGymsByStateAbbr:', error)
+    return []
+  }
+}
+
+export async function getCitiesByStateAbbr(stateAbbr: string): Promise<CityData[]> {
+  try {
+    const { data, error } = await supabaseClient
+      .from('lbc_boxing_gyms')
+      .select('city')
+      .eq('state', stateAbbr.toUpperCase())
+      .not('city', 'is', null)
+
+    if (error) {
+      console.error('Error fetching cities by state abbr:', error)
+      return []
+    }
+
+    const cityCounts = data.reduce((acc, gym) => {
+      const city = gym.city
+      if (city) {
+        acc[city] = (acc[city] || 0) + 1
+      }
+      return acc
+    }, {} as Record<string, number>)
+
+    const stateName = abbreviationToState[stateAbbr.toUpperCase()] || stateAbbr
+
+    return Object.entries(cityCounts)
+      .map(([city, count]) => ({
+        name: city,
+        slug: cityNameToSlug(city),
+        count,
+        state: stateName,
+        stateSlug: stateNameToSlug(stateName)
+      }))
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 10)
+  } catch (error) {
+    console.error('Error in getCitiesByStateAbbr:', error)
+    return []
+  }
+}
+
+export async function getGymsByCityAbbr(stateAbbr: string, citySlug: string): Promise<Gym[]> {
+  try {
+    const { data: allCityGyms, error } = await supabaseClient
+      .from('lbc_boxing_gyms')
+      .select('*')
+      .eq('state', stateAbbr.toUpperCase())
+
+    if (error) {
+      console.error('Error fetching gyms by city:', error)
+      return []
+    }
+
+    const cityGyms = allCityGyms?.filter(gym =>
+      cityNameToSlug(gym.city) === citySlug
+    ) || []
+
+    return cityGyms.sort((a, b) => (a.name || '').localeCompare(b.name || ''))
+  } catch (error) {
+    console.error('Error in getGymsByCityAbbr:', error)
+    return []
+  }
 }

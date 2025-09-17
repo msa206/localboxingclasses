@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
 import Breadcrumbs from '@/components/Breadcrumbs'
-import { getAllCities } from '@/lib/data'
+import { getAllCities, getStates } from '@/lib/data'
 
 export const metadata: Metadata = {
   title: 'Boxing Classes by City',
@@ -12,7 +12,16 @@ const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
 
 export default async function CitiesPage() {
   // Fetch real cities data from database
-  const allCities = await getAllCities()
+  const [allCities, statesData] = await Promise.all([
+    getAllCities(),
+    getStates()
+  ])
+
+  // Create state abbreviation lookup
+  const stateToAbbr = statesData.reduce((acc, state) => {
+    acc[state.state] = state.abbr.toLowerCase()
+    return acc
+  }, {} as Record<string, string>)
 
   // Group cities by first letter
   const citiesByLetter = allCities.reduce((acc, city) => {
@@ -23,12 +32,12 @@ export default async function CitiesPage() {
     acc[firstLetter].push({
       name: city.name,
       state: city.state,
-      stateSlug: city.stateSlug,
+      stateAbbr: stateToAbbr[city.state] || city.state.substring(0, 2).toLowerCase(),
       citySlug: city.slug,
       count: city.count
     })
     return acc
-  }, {} as Record<string, Array<{name: string, state: string, stateSlug: string, citySlug: string, count: number}>>)
+  }, {} as Record<string, Array<{name: string, state: string, stateAbbr: string, citySlug: string, count: number}>>)
 
   // Sort cities within each letter group by gym count (descending), then by name
   Object.keys(citiesByLetter).forEach(letter => {
@@ -117,8 +126,8 @@ export default async function CitiesPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {cities.map((city) => (
                     <Link
-                      key={`${city.stateSlug}-${city.citySlug}`}
-                      href={`/states/${city.stateSlug}/${city.citySlug}`}
+                      key={`${city.stateAbbr}-${city.citySlug}`}
+                      href={`/${city.stateAbbr}/${city.citySlug}`}
                       className="bg-white border border-gray-200 rounded-lg p-6 hover:border-fight-red/50 hover:shadow-md transition-all group"
                     >
                       <div className="flex justify-between items-start mb-2">

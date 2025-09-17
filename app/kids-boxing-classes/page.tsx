@@ -82,7 +82,7 @@ export default async function KidsBoxingHub() {
 
           <div className="flex justify-center">
             <Link
-              href="/boxing/kids/los-angeles-ca"
+              href="/ca/los-angeles/kids-boxing-classes"
               className="group p-6 bg-white border-2 border-gray-200 rounded-lg hover:border-fight-red hover:shadow-lg transition-all text-center"
             >
               <div className="text-xl font-bold text-black group-hover:text-fight-red transition-colors mb-2">

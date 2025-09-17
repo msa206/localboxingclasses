@@ -27,7 +27,7 @@ export default async function StatesPage() {
           {statesData.map((state) => (
             <Link
               key={state.slug}
-              href={`/states/${state.slug}`}
+              href={`/${state.abbr.toLowerCase()}`}
               className="group p-4 bg-white border border-gray-200 rounded-lg hover:border-fight-red/50 transition-colors shadow-sm hover:shadow-md"
             >
               <h2 className="font-bold text-black group-hover:text-fight-red transition-colors">

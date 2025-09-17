@@ -27,8 +27,8 @@ export default async function Home() {
     return {
       name: `${city.name}, ${stateAbbr}`,
       cityName: city.name,
-      state: city.stateSlug,
-      city: city.slug,
+      stateAbbr: stateAbbr.toLowerCase(),
+      citySlug: city.slug,
       count: city.count
     }
   })
@@ -85,7 +85,7 @@ export default async function Home() {
           {/* Kids Boxing CTA */}
           <div className="mt-8">
             <Link
-              href="/boxing/kids"
+              href="/kids-boxing-classes"
               className="inline-flex items-center px-8 py-4 bg-white text-fight-red font-bold rounded-xl hover:bg-gray-100 transition-all duration-300 hover:scale-105 shadow-lg"
             >
               <svg className="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -108,7 +108,7 @@ export default async function Home() {
             {statesData.map((state) => (
               <Link
                 key={state.slug}
-                href={`/states/${state.slug}`}
+                href={`/${state.abbr.toLowerCase()}`}
                 className="group p-4 bg-white border border-gray-200 rounded-lg hover:border-fight-red/50 transition-colors shadow-sm hover:shadow-md text-center"
               >
                 <h3 className="font-bold text-black group-hover:text-fight-red transition-colors">
@@ -133,8 +133,8 @@ export default async function Home() {
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {topCities.map((city) => (
               <Link
-                key={`${city.state}-${city.city}`}
-                href={`/states/${city.state}/${city.city}`}
+                key={`${city.stateAbbr}-${city.citySlug}`}
+                href={`/${city.stateAbbr}/${city.citySlug}`}
                 className="group p-4 bg-white border border-gray-200 rounded-lg hover:border-fight-red/50 transition-colors shadow-sm hover:shadow-md text-center"
               >
                 <h3 className="font-semibold text-black group-hover:text-fight-red transition-colors">
