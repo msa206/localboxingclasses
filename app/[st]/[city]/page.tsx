@@ -82,6 +82,18 @@ export default async function CityPage({ params }: { params: Promise<{ st: strin
               </svg>
               Kids Boxing Classes
             </Link>
+            {/* Only show Free Trial Gyms button for Los Angeles for now */}
+            {st === 'ca' && citySlug === 'los-angeles' && (
+              <Link
+                href="/ca/los-angeles/boxing-gyms-with-free-trials"
+                className="inline-flex items-center px-5 py-2.5 bg-white border-2 border-fight-red text-fight-red font-semibold rounded-lg hover:bg-fight-red hover:text-white transition-all duration-200"
+              >
+                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                Free Trial Gyms
+              </Link>
+            )}
             {/* Placeholder for future categories */}
             <button
               disabled
@@ -104,7 +116,7 @@ export default async function CityPage({ params }: { params: Promise<{ st: strin
           </div>
         </section>
 
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {gyms.map((gym) => (
             <GymCard key={gym.id} {...gym} />
           ))}

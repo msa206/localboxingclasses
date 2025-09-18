@@ -82,8 +82,8 @@ export default async function Home() {
           </p>
           <ZipSearchBar />
 
-          {/* Kids Boxing CTA */}
-          <div className="mt-8">
+          {/* CTA Buttons */}
+          <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/kids-boxing-classes"
               className="inline-flex items-center px-8 py-4 bg-white text-fight-red font-bold rounded-xl hover:bg-gray-100 transition-all duration-300 hover:scale-105 shadow-lg"
@@ -92,6 +92,15 @@ export default async function Home() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
               </svg>
               Kids Boxing Gyms
+            </Link>
+            <Link
+              href="/free-trial-gyms"
+              className="inline-flex items-center px-8 py-4 bg-white text-fight-red font-bold rounded-xl hover:bg-gray-100 transition-all duration-300 hover:scale-105 shadow-lg"
+            >
+              <svg className="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              Free Trial Gyms
             </Link>
           </div>
         </div>

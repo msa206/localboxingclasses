@@ -24,11 +24,17 @@ export default function Header() {
             </span>
           </Link>
           <div className="hidden md:flex items-center space-x-8">
+            <Link href="/" className="text-gray-300 hover:text-white transition-colors font-medium">
+              Home
+            </Link>
             <Link href="/states" className="text-gray-300 hover:text-white transition-colors font-medium">
               Browse States
             </Link>
             <Link href="/cities" className="text-gray-300 hover:text-white transition-colors font-medium">
               Browse Cities
+            </Link>
+            <Link href="/about" className="text-gray-300 hover:text-white transition-colors font-medium">
+              About
             </Link>
             <Link href="/classes" className="bg-fight-red text-white px-4 py-2 rounded-lg font-medium hover:bg-fight-red/90 transition-colors">
               Search by ZIP

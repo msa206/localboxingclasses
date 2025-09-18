@@ -30,11 +30,17 @@ export default function Footer() {
           <div className="md:text-center">
             <h3 className="text-white font-semibold mb-4">Quick Links</h3>
             <div className="flex flex-col md:flex-row md:justify-center gap-4">
+              <Link href="/" className="text-gray-400 hover:text-fight-red text-sm transition-colors">
+                Home
+              </Link>
               <Link href="/states" className="text-gray-400 hover:text-fight-red text-sm transition-colors">
                 All States
               </Link>
               <Link href="/cities" className="text-gray-400 hover:text-fight-red text-sm transition-colors">
                 All Cities
+              </Link>
+              <Link href="/about" className="text-gray-400 hover:text-fight-red text-sm transition-colors">
+                About
               </Link>
               <Link href="/classes" className="text-gray-400 hover:text-fight-red text-sm transition-colors">
                 ZIP Search

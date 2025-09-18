@@ -3,18 +3,18 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import Breadcrumbs from '@/components/Breadcrumbs'
 import GymCard from '@/components/GymCard'
-import { getStates, getStateByAbbr, getGymsByStateAbbr, getCitiesByStateAbbr } from '@/lib/data'
+import { getStates, getStateBySlug, getGymsByState, getCitiesByState } from '@/lib/data'
 
 export async function generateStaticParams() {
   const states = await getStates()
   return states.map((state) => ({
-    st: state.abbr.toLowerCase(),
+    state: state.slug,
   }))
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ st: string }> }): Promise<Metadata> {
-  const { st } = await params
-  const stateData = await getStateByAbbr(st)
+export async function generateMetadata({ params }: { params: Promise<{ state: string }> }): Promise<Metadata> {
+  const { state } = await params
+  const stateData = await getStateBySlug(state)
   if (!stateData) return {}
 
   return {
@@ -23,17 +23,17 @@ export async function generateMetadata({ params }: { params: Promise<{ st: strin
   }
 }
 
-export default async function StatePage({ params }: { params: Promise<{ st: string }> }) {
-  const { st } = await params
-  const stateData = await getStateByAbbr(st)
+export default async function StatePage({ params }: { params: Promise<{ state: string }> }) {
+  const { state } = await params
+  const stateData = await getStateBySlug(state)
 
   if (!stateData) {
     notFound()
   }
 
   const [cities, gyms] = await Promise.all([
-    getCitiesByStateAbbr(st),
-    getGymsByStateAbbr(st)
+    getCitiesByState(state),
+    getGymsByState(state)
   ])
 
   return (
@@ -58,7 +58,7 @@ export default async function StatePage({ params }: { params: Promise<{ st: stri
               {cities.map((city) => (
                 <Link
                   key={city.slug}
-                  href={`/${st}/${city.slug}`}
+                  href={`/states/${state}/${city.slug}`}
                   className="p-4 bg-white border border-gray-200 rounded-lg hover:border-fight-red/50 hover:text-fight-red transition-colors text-center shadow-sm hover:shadow-md"
                 >
                   <div className="font-semibold text-black">{city.name}</div>

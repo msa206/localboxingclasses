@@ -10,6 +10,11 @@ interface GymCardProps {
   review_stars?: number | null
   review_count?: number | null
   distance_mi?: number | null
+  offers_kids?: boolean | null
+  offers_kickboxing?: boolean | null
+  offers_free_trial?: boolean | null
+  beginner_friendly?: boolean | null
+  women_focused?: boolean | null
 }
 
 export default function GymCard({
@@ -24,6 +29,11 @@ export default function GymCard({
   review_stars,
   review_count,
   distance_mi,
+  offers_kids,
+  offers_kickboxing,
+  offers_free_trial,
+  beginner_friendly,
+  women_focused,
 }: GymCardProps) {
   const address = full_address || `${city}, ${state} ${postal_code}`
   
@@ -54,6 +64,35 @@ export default function GymCard({
           </div>
         </div>
       )}
+
+      {/* Feature Pills */}
+      <div className="flex flex-wrap gap-2 mb-4">
+        {offers_kids && (
+          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+            ✓ Kids Programs
+          </span>
+        )}
+        {offers_free_trial && (
+          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+            Free Trial
+          </span>
+        )}
+        {beginner_friendly && (
+          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+            Beginner Friendly
+          </span>
+        )}
+        {offers_kickboxing && (
+          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
+            Kickboxing
+          </span>
+        )}
+        {women_focused && (
+          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-pink-100 text-pink-800">
+            Women Focused
+          </span>
+        )}
+      </div>
 
       {/* Spacer to push buttons to bottom */}
       <div className="flex-grow"></div>
