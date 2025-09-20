@@ -8,9 +8,13 @@ export const metadata: Metadata = {
 }
 
 export default function FreeTrialGymsHub() {
-  // Starting with Los Angeles only for prototyping
+  // Starting with Los Angeles, Chicago, New York City, Houston, and Las Vegas for prototyping
   const priorityCities = [
-    { name: 'Los Angeles', state: 'CA', slug: 'los-angeles', stateSlug: 'california' },
+    { name: 'Los Angeles', state: 'CA', slug: 'los-angeles', stateSlug: 'ca', href: '/ca/los-angeles/boxing-gyms-with-free-trials' },
+    { name: 'Chicago', state: 'IL', slug: 'chicago', stateSlug: 'il', href: '/il/chicago/boxing-gyms-with-free-trials' },
+    { name: 'New York City', state: 'NY', slug: 'new-york', stateSlug: 'ny', href: '/ny/new-york/boxing-gyms-with-free-trials' },
+    { name: 'Houston', state: 'TX', slug: 'houston', stateSlug: 'tx', href: '/tx/houston/boxing-gyms-with-free-trials' },
+    { name: 'Las Vegas', state: 'NV', slug: 'las-vegas', stateSlug: 'nv', href: '/nv/las-vegas/boxing-gyms-with-free-trials' },
   ]
 
   return (
@@ -38,7 +42,7 @@ export default function FreeTrialGymsHub() {
       <section className="py-16 px-4 bg-gray-50">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl font-bold text-center text-black mb-12">
-            Why Choose Free Trial Gyms?
+            Why take a free boxing lesson?
           </h2>
           <div className="grid md:grid-cols-3 gap-8">
             <div className="bg-white p-6 rounded-lg shadow-sm">
@@ -73,21 +77,24 @@ export default function FreeTrialGymsHub() {
             Find Free Trial Gyms by City
           </h2>
           <p className="text-center text-gray-600 mb-12">
-            Currently available in Los Angeles - More cities coming soon!
+            Currently available in select cities - More locations coming soon!
           </p>
 
-          <div className="flex justify-center">
-            <Link
-              href="/ca/los-angeles/boxing-gyms-with-free-trials"
-              className="group p-6 bg-white border-2 border-gray-200 rounded-lg hover:border-fight-red hover:shadow-lg transition-all text-center"
-            >
-              <div className="text-xl font-bold text-black group-hover:text-fight-red transition-colors mb-2">
-                Los Angeles, CA
-              </div>
-              <div className="text-sm text-gray-600">
-                View Free Trial Gyms →
-              </div>
-            </Link>
+          <div className="flex justify-center gap-6 flex-wrap">
+            {priorityCities.map((city) => (
+              <Link
+                key={`${city.stateSlug}-${city.slug}`}
+                href={city.href}
+                className="group p-6 bg-white border-2 border-gray-200 rounded-lg hover:border-fight-red hover:shadow-lg transition-all text-center"
+              >
+                <div className="text-xl font-bold text-black group-hover:text-fight-red transition-colors mb-2">
+                  {city.name}, {city.state}
+                </div>
+                <div className="text-sm text-gray-600">
+                  View Free Trial Gyms →
+                </div>
+              </Link>
+            ))}
           </div>
 
           <div className="text-center mt-12">

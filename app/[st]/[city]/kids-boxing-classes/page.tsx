@@ -91,7 +91,7 @@ export default async function KidsBoxingPage({ params }: { params: Promise<{ st:
             </h2>
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {gyms.map((gym) => (
-                <GymCard key={gym.id} {...gym} />
+                <GymCard key={gym.id} {...gym} priorityTag="kids" />
               ))}
             </div>
           </>

@@ -191,6 +191,52 @@ export async function getKidsBoxingGyms(city: string, state: string): Promise<Gy
   }
 }
 
+export async function getFreeTrialGyms(city: string, state: string): Promise<Gym[]> {
+  try {
+    const { data, error } = await supabaseClient
+      .from('lbc_boxing_gyms')
+      .select('*')
+      .eq('city', city)
+      .eq('state', state)
+      .eq('offers_free_trial', true)
+      .order('review_stars', { ascending: false, nullsFirst: false })
+      .order('name', { ascending: true })
+
+    if (error) {
+      console.error('Error fetching free trial gyms:', error)
+      return []
+    }
+
+    return data || []
+  } catch (error) {
+    console.error('Error in getFreeTrialGyms:', error)
+    return []
+  }
+}
+
+export async function getWomenClassesGyms(city: string, state: string): Promise<Gym[]> {
+  try {
+    const { data, error } = await supabaseClient
+      .from('lbc_boxing_gyms')
+      .select('*')
+      .eq('city', city)
+      .eq('state', state)
+      .eq('women_focused', true)
+      .order('review_stars', { ascending: false, nullsFirst: false })
+      .order('name', { ascending: true })
+
+    if (error) {
+      console.error('Error fetching women classes gyms:', error)
+      return []
+    }
+
+    return data || []
+  } catch (error) {
+    console.error('Error in getWomenClassesGyms:', error)
+    return []
+  }
+}
+
 export async function getCitiesByState(stateSlug: string): Promise<CityData[]> {
   try {
     const stateName = Object.keys(stateAbbreviations).find(

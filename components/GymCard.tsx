@@ -15,6 +15,7 @@ interface GymCardProps {
   offers_free_trial?: boolean | null
   beginner_friendly?: boolean | null
   women_focused?: boolean | null
+  priorityTag?: 'kids' | 'free-trial' | 'women' | 'beginner' | 'kickboxing'
 }
 
 export default function GymCard({
@@ -34,6 +35,7 @@ export default function GymCard({
   offers_free_trial,
   beginner_friendly,
   women_focused,
+  priorityTag,
 }: GymCardProps) {
   const address = full_address || `${city}, ${state} ${postal_code}`
   
@@ -67,29 +69,57 @@ export default function GymCard({
 
       {/* Feature Pills */}
       <div className="flex flex-wrap gap-2 mb-4">
-        {offers_kids && (
+        {/* Priority tag rendered first with checkmark if specified */}
+        {priorityTag === 'kids' && offers_kids && (
           <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
             ✓ Kids Programs
           </span>
         )}
-        {offers_free_trial && (
+        {priorityTag === 'free-trial' && offers_free_trial && (
+          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+            ✓ Free Trial
+          </span>
+        )}
+        {priorityTag === 'women' && women_focused && (
+          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-pink-100 text-pink-800">
+            ✓ Women Classes
+          </span>
+        )}
+        {priorityTag === 'beginner' && beginner_friendly && (
+          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+            ✓ Beginner Friendly
+          </span>
+        )}
+        {priorityTag === 'kickboxing' && offers_kickboxing && (
+          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
+            ✓ Kickboxing
+          </span>
+        )}
+
+        {/* Remaining tags in default order (skip if already shown as priority) */}
+        {offers_kids && priorityTag !== 'kids' && (
+          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+            ✓ Kids Programs
+          </span>
+        )}
+        {offers_free_trial && priorityTag !== 'free-trial' && (
           <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
             Free Trial
           </span>
         )}
-        {beginner_friendly && (
+        {beginner_friendly && priorityTag !== 'beginner' && (
           <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
             Beginner Friendly
           </span>
         )}
-        {offers_kickboxing && (
+        {offers_kickboxing && priorityTag !== 'kickboxing' && (
           <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
             Kickboxing
           </span>
         )}
-        {women_focused && (
+        {women_focused && priorityTag !== 'women' && (
           <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-pink-100 text-pink-800">
-            Women Focused
+            Women Classes
           </span>
         )}
       </div>

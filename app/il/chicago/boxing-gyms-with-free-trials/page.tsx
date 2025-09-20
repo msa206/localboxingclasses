@@ -7,13 +7,13 @@ import { generateItemListJsonLd, JsonLdScript } from '@/lib/json-ld'
 import { getStateByAbbr, getCitiesByStateAbbr, getFreeTrialGyms } from '@/lib/data'
 
 export const metadata: Metadata = {
-  title: 'Boxing Gyms with Free Trials in Los Angeles, California',
-  description: 'Discover boxing gyms offering free trials in Los Angeles, CA. Try before you commit with these local boxing studios and martial arts centers.',
+  title: 'Boxing Gyms with Free Trials in Chicago, Illinois',
+  description: 'Discover boxing gyms offering free trials in Chicago, IL. Try before you commit with these local boxing studios and martial arts centers.',
 }
 
-export default async function LosAngelesFreeTrialsPage() {
-  const stateAbbr = 'ca'
-  const citySlug = 'los-angeles'
+export default async function ChicagoFreeTrialsPage() {
+  const stateAbbr = 'il'
+  const citySlug = 'chicago'
 
   // Get state data
   const stateData = await getStateByAbbr(stateAbbr)
@@ -45,7 +45,7 @@ export default async function LosAngelesFreeTrialsPage() {
       latitude: gym.latitude,
       longitude: gym.longitude,
     })),
-    'Boxing Gyms with Free Trials in Los Angeles, California'
+    'Boxing Gyms with Free Trials in Chicago, Illinois'
   )
 
   return (
@@ -59,18 +59,18 @@ export default async function LosAngelesFreeTrialsPage() {
       <div className="max-w-7xl mx-auto px-4 py-8">
         <Breadcrumbs items={[
           { label: 'States', href: '/states' },
-          { label: 'California', href: '/ca' },
-          { label: 'Los Angeles', href: '/ca/los-angeles' },
+          { label: 'Illinois', href: '/il' },
+          { label: 'Chicago', href: '/il/chicago' },
           { label: 'Boxing Gyms with Free Trials' }
         ]} />
 
         {/* Hero Section */}
         <div className="mb-12">
           <h1 className="text-4xl md:text-5xl font-bold text-black mb-6">
-            Boxing Gyms with <span className="text-fight-red">Free Trials</span> in Los Angeles
+            Boxing Gyms with <span className="text-fight-red">Free Trials</span> in Chicago
           </h1>
           <p className="text-xl text-gray-600 mb-6 max-w-3xl">
-            Try before you commit! These Los Angeles boxing gyms offer free trial classes so you can experience their training style, meet the coaches, and see if it's the right fit for your fitness journey.
+            Experience Chicago's best boxing gyms risk-free! These gyms offer free trial classes so you can test their training methods, meet the coaches, and find your perfect fit in the Windy City.
           </p>
 
           {/* Stats */}
@@ -92,7 +92,7 @@ export default async function LosAngelesFreeTrialsPage() {
 
         {/* Benefits Section */}
         <div className="bg-gray-50 rounded-lg p-8 mb-12 border border-gray-200">
-          <h2 className="text-2xl font-bold text-black mb-6">Why Try a Free Trial Class?</h2>
+          <h2 className="text-2xl font-bold text-black mb-6">Why Try a Free Boxing Class in Chicago?</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             <div className="text-center">
               <div className="w-16 h-16 bg-fight-red rounded-full flex items-center justify-center mx-auto mb-4">
@@ -145,8 +145,8 @@ export default async function LosAngelesFreeTrialsPage() {
         <section className="mb-12">
           <h2 className="text-3xl font-bold text-black mb-8">
             {gyms.length > 0
-              ? `${gyms.length} Boxing Gyms Offering Free Trials in Los Angeles`
-              : 'Boxing Gyms with Free Trials in Los Angeles'
+              ? `${gyms.length} Boxing Gyms Offering Free Trials in Chicago`
+              : 'Boxing Gyms with Free Trials in Chicago'
             }
           </h2>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -158,10 +158,10 @@ export default async function LosAngelesFreeTrialsPage() {
               <div className="col-span-full">
                 <EmptyState
                   title="No free trial gyms found"
-                  description="We couldn't find any boxing gyms offering free trials in Los Angeles yet."
+                  description="We couldn't find any boxing gyms offering free trials in Chicago yet."
                   action={{
-                    label: 'Browse all Los Angeles gyms',
-                    href: '/ca/los-angeles'
+                    label: 'Browse all Chicago gyms',
+                    href: '/il/chicago'
                   }}
                 />
               </div>
@@ -173,7 +173,7 @@ export default async function LosAngelesFreeTrialsPage() {
         <div className="bg-fight-red rounded-lg p-8 text-white text-center mb-12">
           <h2 className="text-2xl font-bold mb-4">Ready to Start Boxing?</h2>
           <p className="text-lg mb-6 opacity-90">
-            Contact these gyms directly to schedule your free trial class. Don't forget to ask about their beginner programs!
+            Contact these Chicago gyms directly to schedule your free trial class. Don't forget to ask about their beginner programs!
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
@@ -183,10 +183,10 @@ export default async function LosAngelesFreeTrialsPage() {
               Search More Gyms by ZIP
             </a>
             <a
-              href="/ca/los-angeles"
+              href="/il/chicago"
               className="border-2 border-white text-white px-8 py-3 rounded-lg font-bold hover:bg-white hover:text-fight-red transition-colors inline-block"
             >
-              All Los Angeles Gyms
+              All Chicago Gyms
             </a>
           </div>
         </div>

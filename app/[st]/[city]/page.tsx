@@ -82,16 +82,28 @@ export default async function CityPage({ params }: { params: Promise<{ st: strin
               </svg>
               Kids Boxing Classes
             </Link>
-            {/* Only show Free Trial Gyms button for Los Angeles for now */}
-            {st === 'ca' && citySlug === 'los-angeles' && (
+            {/* Show Free Trial Gyms button for LA, Chicago, NYC, Houston, and Las Vegas */}
+            {((st === 'ca' && citySlug === 'los-angeles') || (st === 'il' && citySlug === 'chicago') || (st === 'ny' && citySlug === 'new-york') || (st === 'tx' && citySlug === 'houston') || (st === 'nv' && citySlug === 'las-vegas')) && (
               <Link
-                href="/ca/los-angeles/boxing-gyms-with-free-trials"
+                href={`/${st}/${citySlug}/boxing-gyms-with-free-trials`}
                 className="inline-flex items-center px-5 py-2.5 bg-white border-2 border-fight-red text-fight-red font-semibold rounded-lg hover:bg-fight-red hover:text-white transition-all duration-200"
               >
                 <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
                 Free Trial Gyms
+              </Link>
+            )}
+            {/* Show Boxing Classes for Women button for LA, Chicago, NYC, Houston, and Las Vegas */}
+            {((st === 'ca' && citySlug === 'los-angeles') || (st === 'il' && citySlug === 'chicago') || (st === 'ny' && citySlug === 'new-york') || (st === 'tx' && citySlug === 'houston') || (st === 'nv' && citySlug === 'las-vegas')) && (
+              <Link
+                href={`/${st}/${citySlug}/boxing-classes-for-women`}
+                className="inline-flex items-center px-5 py-2.5 bg-white border-2 border-fight-red text-fight-red font-semibold rounded-lg hover:bg-fight-red hover:text-white transition-all duration-200"
+              >
+                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+                Boxing Classes for Women
               </Link>
             )}
             {/* Placeholder for future categories */}

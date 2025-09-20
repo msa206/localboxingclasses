@@ -1,24 +1,20 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
 import Breadcrumbs from '@/components/Breadcrumbs'
-import { getAllCities } from '@/lib/data'
 
 export const metadata: Metadata = {
-  title: 'Kids Boxing Classes - Find Youth Boxing Programs Near You',
-  description: 'Discover the best kids boxing classes and youth boxing programs across the United States. Safe, fun, and educational boxing training for children.',
+  title: 'Boxing Classes for Women - Female-Focused Boxing Programs',
+  description: 'Discover women-focused boxing classes and programs across the United States. Empowering, supportive, and designed specifically for women.',
 }
 
-export default async function KidsBoxingHub() {
-  // Get all cities data
-  const allCities = await getAllCities()
-
+export default function BoxingClassesForWomenHub() {
   // Starting with Los Angeles, Chicago, New York City, Houston, and Las Vegas for prototyping
   const priorityCities = [
-    { name: 'Los Angeles', state: 'CA', slug: 'los-angeles-ca', stateAbbr: 'ca', citySlug: 'los-angeles' },
-    { name: 'Chicago', state: 'IL', slug: 'chicago-il', stateAbbr: 'il', citySlug: 'chicago' },
-    { name: 'New York City', state: 'NY', slug: 'new-york-ny', stateAbbr: 'ny', citySlug: 'new-york' },
-    { name: 'Houston', state: 'TX', slug: 'houston-tx', stateAbbr: 'tx', citySlug: 'houston' },
-    { name: 'Las Vegas', state: 'NV', slug: 'las-vegas-nv', stateAbbr: 'nv', citySlug: 'las-vegas' },
+    { name: 'Los Angeles', state: 'CA', slug: 'los-angeles', stateSlug: 'ca', href: '/ca/los-angeles/boxing-classes-for-women' },
+    { name: 'Chicago', state: 'IL', slug: 'chicago', stateSlug: 'il', href: '/il/chicago/boxing-classes-for-women' },
+    { name: 'New York City', state: 'NY', slug: 'new-york', stateSlug: 'ny', href: '/ny/new-york/boxing-classes-for-women' },
+    { name: 'Houston', state: 'TX', slug: 'houston', stateSlug: 'tx', href: '/tx/houston/boxing-classes-for-women' },
+    { name: 'Las Vegas', state: 'NV', slug: 'las-vegas', stateSlug: 'nv', href: '/nv/las-vegas/boxing-classes-for-women' },
   ]
 
   return (
@@ -27,16 +23,16 @@ export default async function KidsBoxingHub() {
       <section className="bg-gradient-to-b from-gray-50 to-white py-16 px-4">
         <div className="max-w-7xl mx-auto">
           <Breadcrumbs items={[
-            { label: 'Kids Boxing' }
+            { label: 'Boxing Classes for Women' }
           ]} />
 
           <div className="text-center mt-8">
             <h1 className="text-5xl md:text-6xl font-black mb-6 text-black">
-              Kids <span className="text-fight-red">Boxing Classes</span>
+              Boxing Classes for <span className="text-fight-red">Women</span>
             </h1>
             <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-              Safe, fun, and educational boxing programs for children. Build confidence,
-              discipline, and fitness through youth boxing training.
+              Empowering women through boxing. Find supportive, female-focused training programs
+              designed to build strength, confidence, and community.
             </p>
           </div>
         </div>
@@ -46,28 +42,28 @@ export default async function KidsBoxingHub() {
       <section className="py-16 px-4 bg-gray-50">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl font-bold text-center text-black mb-12">
-            Why Kids Boxing?
+            Why Women's Boxing?
           </h2>
           <div className="grid md:grid-cols-3 gap-8">
             <div className="bg-white p-6 rounded-lg shadow-sm">
-              <h3 className="text-xl font-bold text-fight-red mb-3">Build Confidence</h3>
+              <h3 className="text-xl font-bold text-fight-red mb-3">Empowerment</h3>
               <p className="text-gray-600">
-                Boxing helps children develop self-confidence and self-esteem through
-                skill progression and achievement.
+                Build physical and mental strength while developing self-defense skills
+                in a supportive, women-focused environment.
               </p>
             </div>
             <div className="bg-white p-6 rounded-lg shadow-sm">
-              <h3 className="text-xl font-bold text-fight-red mb-3">Learn Discipline</h3>
+              <h3 className="text-xl font-bold text-fight-red mb-3">Community</h3>
               <p className="text-gray-600">
-                Structured training teaches focus, respect, and self-control while
-                having fun in a safe environment.
+                Train alongside like-minded women who support and motivate each other
+                to reach their fitness and personal goals.
               </p>
             </div>
             <div className="bg-white p-6 rounded-lg shadow-sm">
-              <h3 className="text-xl font-bold text-fight-red mb-3">Stay Active</h3>
+              <h3 className="text-xl font-bold text-fight-red mb-3">Total Fitness</h3>
               <p className="text-gray-600">
-                Keep kids physically active with engaging workouts that improve
-                coordination, strength, and cardiovascular health.
+                Get an incredible full-body workout that improves strength, cardio,
+                coordination, and mental resilience.
               </p>
             </div>
           </div>
@@ -78,7 +74,7 @@ export default async function KidsBoxingHub() {
       <section className="py-16 px-4">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl font-bold text-center text-black mb-4">
-            Find Kids Boxing Classes by City
+            Find Boxing Classes for Women by City
           </h2>
           <p className="text-center text-gray-600 mb-12">
             Currently available in select cities - More locations coming soon!
@@ -87,15 +83,15 @@ export default async function KidsBoxingHub() {
           <div className="flex justify-center gap-6 flex-wrap">
             {priorityCities.map((city) => (
               <Link
-                key={city.slug}
-                href={`/${city.stateAbbr}/${city.citySlug}/kids-boxing-classes`}
+                key={`${city.stateSlug}-${city.slug}`}
+                href={city.href}
                 className="group p-6 bg-white border-2 border-gray-200 rounded-lg hover:border-fight-red hover:shadow-lg transition-all text-center"
               >
                 <div className="text-xl font-bold text-black group-hover:text-fight-red transition-colors mb-2">
                   {city.name}, {city.state}
                 </div>
                 <div className="text-sm text-gray-600">
-                  View Kids Boxing Programs →
+                  View Women's Boxing Programs →
                 </div>
               </Link>
             ))}
@@ -109,35 +105,35 @@ export default async function KidsBoxingHub() {
         </div>
       </section>
 
-      {/* Age Groups Section */}
+      {/* Program Types Section */}
       <section className="py-16 px-4 bg-gray-50">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl font-bold text-center text-black mb-12">
-            Programs for Every Age
+            Types of Women's Boxing Programs
           </h2>
           <div className="grid md:grid-cols-4 gap-6">
             <div className="bg-white p-6 rounded-lg border border-gray-200">
-              <h3 className="font-bold text-lg text-black mb-2">Ages 5-7</h3>
+              <h3 className="font-bold text-lg text-black mb-2">Beginner Classes</h3>
               <p className="text-gray-600 text-sm">
-                Introduction to boxing basics, focus on coordination and fun activities.
+                Perfect for women new to boxing, focusing on fundamentals and proper form.
               </p>
             </div>
             <div className="bg-white p-6 rounded-lg border border-gray-200">
-              <h3 className="font-bold text-lg text-black mb-2">Ages 8-10</h3>
+              <h3 className="font-bold text-lg text-black mb-2">Fitness Boxing</h3>
               <p className="text-gray-600 text-sm">
-                Fundamental techniques, footwork, and beginning sparring drills.
+                High-energy workouts combining boxing techniques with cardio and strength training.
               </p>
             </div>
             <div className="bg-white p-6 rounded-lg border border-gray-200">
-              <h3 className="font-bold text-lg text-black mb-2">Ages 11-13</h3>
+              <h3 className="font-bold text-lg text-black mb-2">Self-Defense</h3>
               <p className="text-gray-600 text-sm">
-                Advanced techniques, conditioning, and supervised sparring.
+                Practical boxing skills combined with self-defense techniques for real-world situations.
               </p>
             </div>
             <div className="bg-white p-6 rounded-lg border border-gray-200">
-              <h3 className="font-bold text-lg text-black mb-2">Ages 14-17</h3>
+              <h3 className="font-bold text-lg text-black mb-2">Competitive Training</h3>
               <p className="text-gray-600 text-sm">
-                Competition preparation, advanced training, and mentorship programs.
+                Advanced programs for women interested in amateur boxing competitions.
               </p>
             </div>
           </div>
@@ -148,11 +144,11 @@ export default async function KidsBoxingHub() {
       <section className="py-16 px-4 bg-black text-white">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl font-bold mb-4">
-            Ready to Get Your Child Started?
+            Ready to Start Your Boxing Journey?
           </h2>
           <p className="text-gray-300 mb-8">
-            Find the perfect kids boxing program in your area. Safe, structured,
-            and designed to help children thrive.
+            Find women-focused boxing programs in your area. Join a supportive community
+            and discover your inner strength.
           </p>
           <Link
             href="/classes"
