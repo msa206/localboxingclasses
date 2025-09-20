@@ -99,7 +99,7 @@ export default function GymCard({
         {/* Remaining tags in default order (skip if already shown as priority) */}
         {offers_kids && priorityTag !== 'kids' && (
           <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-            ✓ Kids Programs
+            Kids Programs
           </span>
         )}
         {offers_free_trial && priorityTag !== 'free-trial' && (

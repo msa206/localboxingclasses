@@ -1,7 +1,9 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
 import Breadcrumbs from '@/components/Breadcrumbs'
+import MarkdownContent from '@/components/MarkdownContent'
 import { getAllCities } from '@/lib/data'
+import { kidsBoxingContent } from '@/content/pages/kids-boxing'
 
 export const metadata: Metadata = {
   title: 'Kids Boxing Classes - Find Youth Boxing Programs Near You',
@@ -141,6 +143,13 @@ export default async function KidsBoxingHub() {
               </p>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Educational Content Section */}
+      <section className="py-16 px-4 bg-white">
+        <div className="max-w-4xl mx-auto">
+          <MarkdownContent content={kidsBoxingContent} />
         </div>
       </section>
 

@@ -1,6 +1,8 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
 import Breadcrumbs from '@/components/Breadcrumbs'
+import MarkdownContent from '@/components/MarkdownContent'
+import { freeTrialsContent } from '@/content/pages/free-trials'
 
 export const metadata: Metadata = {
   title: 'Boxing Gyms with Free Trials - Try Before You Commit',
@@ -198,6 +200,13 @@ export default function FreeTrialGymsHub() {
               </ul>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Educational Content Section */}
+      <section className="py-16 px-4 bg-white">
+        <div className="max-w-4xl mx-auto">
+          <MarkdownContent content={freeTrialsContent} />
         </div>
       </section>
 
