@@ -121,4 +121,11 @@ export const citiesByState: Record<string, Array<{ name: string; slug: string; c
     { name: 'Rochester', slug: 'rochester', count: 15 },
     { name: 'Albany', slug: 'albany', count: 12 },
   ],
+  'massachusetts': [
+    { name: 'Boston', slug: 'boston', count: 45 },
+    { name: 'Worcester', slug: 'worcester', count: 12 },
+    { name: 'Springfield', slug: 'springfield', count: 8 },
+    { name: 'Cambridge', slug: 'cambridge', count: 15 },
+    { name: 'Lowell', slug: 'lowell', count: 6 },
+  ],
 }

@@ -70,7 +70,7 @@ export default async function CityPage({ params }: { params: Promise<{ st: strin
         </p>
 
         {/* Search by Category Section - Only show if city has more than 5 gyms */}
-        {gyms.length > 5 && (
+        {cityData.count > 5 && (
           <section className="mb-10 p-6 bg-gray-50 rounded-xl">
             <h2 className="text-xl font-bold text-black mb-4">Search by Category</h2>
             <div className="flex flex-wrap gap-3">

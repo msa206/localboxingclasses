@@ -19,12 +19,14 @@ export async function generateMetadata({ searchParams }: { searchParams: SearchP
     return {
       title: 'Search Boxing Classes by ZIP Code',
       description: 'Enter your ZIP code to find boxing gyms and classes near you.',
+      robots: 'noindex, follow',
     }
   }
-  
+
   return {
     title: `Boxing Classes Near ${zip}`,
     description: `Find boxing gyms and classes near ZIP code ${zip}. Discover local boxing training for beginners, kids, and experienced fighters.`,
+    robots: 'noindex, follow',
   }
 }
 
