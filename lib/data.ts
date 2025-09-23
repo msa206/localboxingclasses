@@ -339,25 +339,38 @@ export async function getAllCities(): Promise<CityData[]> {
       return []
     }
 
-    const cityStateCount = data.reduce((acc, gym) => {
-      const key = `${gym.city}|${gym.state}`
-      acc[key] = (acc[key] || 0) + 1
+    // Group cities by state and count gyms per city
+    const stateGroups = data.reduce((acc, gym) => {
+      const stateAbbr = gym.state
+      if (!acc[stateAbbr]) {
+        acc[stateAbbr] = {}
+      }
+      const city = gym.city
+      acc[stateAbbr][city] = (acc[stateAbbr][city] || 0) + 1
       return acc
-    }, {} as Record<string, number>)
+    }, {} as Record<string, Record<string, number>>)
 
-    return Object.entries(cityStateCount)
-      .map(([key, count]) => {
-        const [city, stateAbbr] = key.split('|')
-        const fullStateName = abbreviationToState[stateAbbr] || stateAbbr
-        return {
+    const allCities: CityData[] = []
+
+    // For each state, get only the top 10 cities (matching generateStaticParams behavior)
+    for (const [stateAbbr, cities] of Object.entries(stateGroups)) {
+      const fullStateName = abbreviationToState[stateAbbr] || stateAbbr
+
+      const stateCities = Object.entries(cities)
+        .map(([city, count]) => ({
           name: city,
           slug: cityNameToSlug(city),
           count,
           state: fullStateName,
           stateSlug: stateNameToSlug(fullStateName)
-        }
-      })
-      .sort((a, b) => b.count - a.count)
+        }))
+        .sort((a, b) => b.count - a.count)
+        .slice(0, 10) // Only top 10 cities per state
+
+      allCities.push(...stateCities)
+    }
+
+    return allCities.sort((a, b) => b.count - a.count)
   } catch (error) {
     console.error('Error in getAllCities:', error)
     return []
