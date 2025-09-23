@@ -39,11 +39,11 @@ export default async function LasVegasWomenBoxingPage() {
       full_address: gym.full_address,
       city: gym.city,
       state: gym.state,
-      postal_code: gym.postal_code,
-      phone_number: gym.phone_number,
-      source_url: gym.source_url,
-      latitude: gym.latitude,
-      longitude: gym.longitude,
+      postal_code: gym.postal_code || undefined,
+      phone_number: gym.phone_number || undefined,
+      source_url: gym.source_url || undefined,
+      latitude: gym.latitude || undefined,
+      longitude: gym.longitude || undefined,
     })),
     'Boxing Classes for Women in Las Vegas, Nevada'
   )

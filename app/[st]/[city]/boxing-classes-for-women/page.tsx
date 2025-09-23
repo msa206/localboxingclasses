@@ -1,29 +1,56 @@
 import { Metadata } from 'next'
+import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import Breadcrumbs from '@/components/Breadcrumbs'
 import GymCard from '@/components/GymCard'
 import EmptyState from '@/components/EmptyState'
 import { generateItemListJsonLd, JsonLdScript } from '@/lib/json-ld'
-import { getStateByAbbr, getCitiesByStateAbbr, getWomenClassesGyms } from '@/lib/data'
+import { getStates, getStateByAbbr, getWomenClassesGyms, getCitiesByStateAbbr } from '@/lib/data'
 
-export const metadata: Metadata = {
-  title: 'Boxing Classes for Women in Chicago, Illinois',
-  description: 'Discover women-focused boxing classes in Chicago, IL. Empowering, supportive programs designed specifically for women.',
+export async function generateStaticParams() {
+  const states = await getStates()
+  const params: { st: string; city: string }[] = []
+
+  for (const state of states) {
+    const cities = await getCitiesByStateAbbr(state.abbr)
+    // Only generate for cities with more than 5 gyms
+    const qualifyingCities = cities.filter(city => city.count > 5)
+    for (const city of qualifyingCities) {
+      params.push({
+        st: state.abbr.toLowerCase(),
+        city: city.slug,
+      })
+    }
+  }
+
+  return params
 }
 
-export default async function ChicagoWomenBoxingPage() {
-  const stateAbbr = 'il'
-  const citySlug = 'chicago'
+export async function generateMetadata({ params }: { params: Promise<{ st: string; city: string }> }): Promise<Metadata> {
+  const { st, city: citySlug } = await params
+  const stateData = await getStateByAbbr(st)
+  const cities = await getCitiesByStateAbbr(st)
+  const cityData = cities.find(c => c.slug === citySlug)
 
-  // Get state data
-  const stateData = await getStateByAbbr(stateAbbr)
+  if (!stateData || !cityData) return {}
+
+  return {
+    title: `Boxing Classes for Women in ${cityData.name}, ${stateData.abbr.toUpperCase()}`,
+    description: `Discover women-focused boxing classes in ${cityData.name}, ${stateData.state}. Empowering, supportive programs designed specifically for women.`,
+  }
+}
+
+export default async function WomenBoxingClassesPage({ params }: { params: Promise<{ st: string; city: string }> }) {
+  const { st, city: citySlug } = await params
+  const stateData = await getStateByAbbr(st)
+
   if (!stateData) {
     notFound()
   }
 
-  // Get city data
-  const cities = await getCitiesByStateAbbr(stateAbbr)
+  const cities = await getCitiesByStateAbbr(st)
   const cityData = cities.find(c => c.slug === citySlug)
+
   if (!cityData) {
     notFound()
   }
@@ -45,7 +72,7 @@ export default async function ChicagoWomenBoxingPage() {
       latitude: gym.latitude || undefined,
       longitude: gym.longitude || undefined,
     })),
-    'Boxing Classes for Women in Chicago, Illinois'
+    `Boxing Classes for Women in ${cityData.name}, ${stateData.state}`
   )
 
   return (
@@ -59,18 +86,18 @@ export default async function ChicagoWomenBoxingPage() {
       <div className="max-w-7xl mx-auto px-4 py-8">
         <Breadcrumbs items={[
           { label: 'States', href: '/states' },
-          { label: 'Illinois', href: '/il' },
-          { label: 'Chicago', href: '/il/chicago' },
+          { label: stateData.state, href: `/${st}` },
+          { label: cityData.name, href: `/${st}/${citySlug}` },
           { label: 'Boxing Classes for Women' }
         ]} />
 
         {/* Hero Section */}
         <div className="mb-12">
           <h1 className="text-4xl md:text-5xl font-bold text-black mb-6">
-            Boxing Classes for <span className="text-fight-red">Women</span> in Chicago
+            Boxing Classes for <span className="text-fight-red">Women</span> in {cityData.name}
           </h1>
           <p className="text-xl text-gray-600 mb-6 max-w-3xl">
-            Discover empowering women-focused boxing programs in Chicago. Join supportive communities where women train together, build strength, and develop confidence in the Windy City.
+            Discover empowering women-focused boxing programs in {cityData.name}. Join supportive communities where women train together, build strength, and develop confidence.
           </p>
 
           {/* Stats */}
@@ -92,7 +119,7 @@ export default async function ChicagoWomenBoxingPage() {
 
         {/* Benefits Section */}
         <div className="bg-gray-50 rounded-lg p-8 mb-12 border border-gray-200">
-          <h2 className="text-2xl font-bold text-black mb-6">Why Choose Women's Boxing in Chicago?</h2>
+          <h2 className="text-2xl font-bold text-black mb-6">Why Choose Women's Boxing in {cityData.name}?</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             <div className="text-center">
               <div className="w-16 h-16 bg-fight-red rounded-full flex items-center justify-center mx-auto mb-4">
@@ -124,7 +151,7 @@ export default async function ChicagoWomenBoxingPage() {
               </div>
               <h3 className="font-semibold mb-2 text-black">Expert Training</h3>
               <p className="text-gray-600 text-sm">
-                Learn from experienced female coaches who understand women's unique fitness goals.
+                Learn from experienced coaches who understand women's unique fitness goals.
               </p>
             </div>
             <div className="text-center">
@@ -145,8 +172,8 @@ export default async function ChicagoWomenBoxingPage() {
         <section className="mb-12">
           <h2 className="text-3xl font-bold text-black mb-8">
             {gyms.length > 0
-              ? `${gyms.length} Women's Boxing Programs in Chicago`
-              : 'Boxing Classes for Women in Chicago'
+              ? `${gyms.length} Women's Boxing Programs in ${cityData.name}`
+              : `Boxing Classes for Women in ${cityData.name}`
             }
           </h2>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -158,10 +185,10 @@ export default async function ChicagoWomenBoxingPage() {
               <div className="col-span-full">
                 <EmptyState
                   title="No women-focused boxing gyms found"
-                  description="We couldn't find any boxing gyms with women-specific programs in Chicago yet."
+                  description={`We couldn't find any boxing gyms with women-specific programs in ${cityData.name} yet.`}
                   action={{
-                    label: 'Browse all Chicago gyms',
-                    href: '/il/chicago'
+                    label: `Browse all ${cityData.name} gyms`,
+                    href: `/${st}/${citySlug}`
                   }}
                 />
               </div>
@@ -173,7 +200,7 @@ export default async function ChicagoWomenBoxingPage() {
         <div className="bg-fight-red rounded-lg p-8 text-white text-center mb-12">
           <h2 className="text-2xl font-bold mb-4">Ready to Start Your Boxing Journey?</h2>
           <p className="text-lg mb-6 opacity-90">
-            Contact these Chicago gyms directly to learn about their women's boxing programs. Many offer beginner-friendly classes!
+            Contact these {cityData.name} gyms directly to learn about their women's boxing programs. Many offer beginner-friendly classes!
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
@@ -183,10 +210,10 @@ export default async function ChicagoWomenBoxingPage() {
               Search More Gyms by ZIP
             </a>
             <a
-              href="/il/chicago"
+              href={`/${st}/${citySlug}`}
               className="border-2 border-white text-white px-8 py-3 rounded-lg font-bold hover:bg-white hover:text-fight-red transition-colors inline-block"
             >
-              All Chicago Gyms
+              All {cityData.name} Gyms
             </a>
           </div>
         </div>

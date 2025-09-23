@@ -1,7 +1,9 @@
+import React from 'react'
+
 export default function MarkdownContent({ content }: { content: string }) {
   // Split content by lines for processing
   const lines = content.trim().split('\n')
-  const elements: JSX.Element[] = []
+  const elements: React.JSX.Element[] = []
   let currentList: string[] = []
   let listType: 'ul' | 'ol' | null = null
   let key = 0

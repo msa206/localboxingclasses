@@ -11,7 +11,7 @@ export default function AboutPage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold mb-6 text-black">
-            About Local Boxing Classes
+            About Us
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Your trusted nationwide directory for finding boxing gyms and training facilities across the United States.
@@ -96,10 +96,7 @@ export default function AboutPage() {
         </div>
 
         <div className="text-center">
-          <h2 className="text-2xl font-bold mb-4 text-black">Ready to Start Your Boxing Journey?</h2>
-          <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
-            Use our search tools to find boxing gyms in your area. Enter your ZIP code to discover training facilities near you, or browse by state and city to explore options across the country.
-          </p>
+          <h2 className="text-2xl font-bold mb-4 text-black">Ready to start boxing?</h2>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
               href="/classes"

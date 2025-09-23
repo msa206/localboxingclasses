@@ -6,15 +6,22 @@ import GymCard from '@/components/GymCard'
 import { getStates, getStateByAbbr, getKidsBoxingGyms, getCitiesByStateAbbr } from '@/lib/data'
 
 export async function generateStaticParams() {
-  // Generate params for major cities only to avoid too many pages
-  const majorCities = [
-    { st: 'ca', city: 'los-angeles' },
-    { st: 'ny', city: 'new-york' },
-    { st: 'il', city: 'chicago' },
-    { st: 'tx', city: 'houston' },
-    { st: 'ca', city: 'san-francisco' },
-  ]
-  return majorCities
+  const states = await getStates()
+  const params: { st: string; city: string }[] = []
+
+  for (const state of states) {
+    const cities = await getCitiesByStateAbbr(state.abbr)
+    // Only generate for cities with more than 5 gyms
+    const qualifyingCities = cities.filter(city => city.count > 5)
+    for (const city of qualifyingCities) {
+      params.push({
+        st: state.abbr.toLowerCase(),
+        city: city.slug,
+      })
+    }
+  }
+
+  return params
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ st: string; city: string }> }): Promise<Metadata> {
