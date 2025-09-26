@@ -377,6 +377,57 @@ export async function getAllCities(): Promise<CityData[]> {
   }
 }
 
+export async function getAllCitiesForDirectory(): Promise<CityData[]> {
+  try {
+    const { data, error } = await supabaseClient
+      .from('lbc_boxing_gyms')
+      .select('city, state')
+      .not('city', 'is', null)
+      .not('state', 'is', null)
+
+    if (error) {
+      console.error('Error fetching all cities for directory:', error)
+      return []
+    }
+
+    // Group cities by state and count gyms per city (no limit)
+    const stateGroups = data.reduce((acc, gym) => {
+      const stateAbbr = gym.state
+      if (!acc[stateAbbr]) {
+        acc[stateAbbr] = {}
+      }
+      const city = gym.city
+      acc[stateAbbr][city] = (acc[stateAbbr][city] || 0) + 1
+      return acc
+    }, {} as Record<string, Record<string, number>>)
+
+    const allCities: CityData[] = []
+
+    // For each state, get ALL cities (no top 10 limit for directory page)
+    for (const [stateAbbr, cities] of Object.entries(stateGroups)) {
+      const fullStateName = abbreviationToState[stateAbbr] || stateAbbr
+
+      const stateCities = Object.entries(cities)
+        .map(([city, count]) => ({
+          name: city,
+          slug: cityNameToSlug(city),
+          count,
+          state: fullStateName,
+          stateSlug: stateNameToSlug(fullStateName)
+        }))
+        .sort((a, b) => b.count - a.count)
+        // No .slice() limit here - return all cities
+
+      allCities.push(...stateCities)
+    }
+
+    return allCities.sort((a, b) => b.count - a.count)
+  } catch (error) {
+    console.error('Error in getAllCitiesForDirectory:', error)
+    return []
+  }
+}
+
 export async function getStateBySlug(stateSlug: string): Promise<StateData | null> {
   const states = await getStates()
   return states.find(s => s.slug === stateSlug) || null

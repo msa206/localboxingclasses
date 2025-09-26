@@ -7,19 +7,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticPages: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
-      lastModified: new Date('2025-09-21'),
+      lastModified: new Date('2025-09-25'),
       changeFrequency: 'daily',
       priority: 1,
     },
     {
       url: `${baseUrl}/states`,
-      lastModified: new Date('2025-09-21'),
+      lastModified: new Date('2025-09-25'),
       changeFrequency: 'weekly',
       priority: 0.9,
     },
     {
       url: `${baseUrl}/cities`,
-      lastModified: new Date('2025-09-21'),
+      lastModified: new Date('2025-09-25'),
       changeFrequency: 'weekly',
       priority: 0.8,
     },
@@ -31,20 +31,60 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     {
       url: `${baseUrl}/boxing-classes-for-women`,
-      lastModified: new Date('2025-09-21'),
+      lastModified: new Date('2025-09-25'),
       changeFrequency: 'weekly',
       priority: 0.8,
     },
     {
       url: `${baseUrl}/free-trial-gyms`,
-      lastModified: new Date('2025-09-21'),
+      lastModified: new Date('2025-09-25'),
       changeFrequency: 'weekly',
       priority: 0.8,
     },
     {
       url: `${baseUrl}/kids-boxing-classes`,
-      lastModified: new Date('2025-09-21'),
+      lastModified: new Date('2025-09-25'),
       changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+  ]
+
+  // New states added 9/25/2025
+  const newStatePages: MetadataRoute.Sitemap = [
+    {
+      url: `${baseUrl}/az`,
+      lastModified: new Date('2025-09-25'),
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/wi`,
+      lastModified: new Date('2025-09-25'),
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/la`,
+      lastModified: new Date('2025-09-25'),
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/dc`,
+      lastModified: new Date('2025-09-25'),
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/md`,
+      lastModified: new Date('2025-09-25'),
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/va`,
+      lastModified: new Date('2025-09-25'),
+      changeFrequency: 'weekly' as const,
       priority: 0.8,
     },
   ]
@@ -96,5 +136,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
   }
 
-  return [...staticPages, ...statePages, ...cityPages, ...categoryPages]
+  return [...staticPages, ...newStatePages, ...statePages, ...cityPages, ...categoryPages]
 }

@@ -10,13 +10,14 @@ export const metadata: Metadata = {
 }
 
 export default function FreeTrialGymsHub() {
-  // Starting with Los Angeles, Chicago, New York City, Houston, and Las Vegas for prototyping
+  // Priority cities with 3+ gyms offering free trials
   const priorityCities = [
-    { name: 'Los Angeles', state: 'CA', slug: 'los-angeles', stateSlug: 'ca', href: '/ca/los-angeles/boxing-gyms-with-free-trials' },
-    { name: 'Chicago', state: 'IL', slug: 'chicago', stateSlug: 'il', href: '/il/chicago/boxing-gyms-with-free-trials' },
-    { name: 'New York City', state: 'NY', slug: 'new-york', stateSlug: 'ny', href: '/ny/new-york/boxing-gyms-with-free-trials' },
-    { name: 'Houston', state: 'TX', slug: 'houston', stateSlug: 'tx', href: '/tx/houston/boxing-gyms-with-free-trials' },
-    { name: 'Las Vegas', state: 'NV', slug: 'las-vegas', stateSlug: 'nv', href: '/nv/las-vegas/boxing-gyms-with-free-trials' },
+    { name: 'Los Angeles, CA', state: 'CA', slug: 'los-angeles', stateSlug: 'ca', href: '/ca/los-angeles/boxing-gyms-with-free-trials' },
+    { name: 'Chicago, IL', state: 'IL', slug: 'chicago', stateSlug: 'il', href: '/il/chicago/boxing-gyms-with-free-trials' },
+    { name: 'New York City, NY', state: 'NY', slug: 'new-york', stateSlug: 'ny', href: '/ny/new-york/boxing-gyms-with-free-trials' },
+    { name: 'Houston, TX', state: 'TX', slug: 'houston', stateSlug: 'tx', href: '/tx/houston/boxing-gyms-with-free-trials' },
+    { name: 'Las Vegas, NV', state: 'NV', slug: 'las-vegas', stateSlug: 'nv', href: '/nv/las-vegas/boxing-gyms-with-free-trials' },
+    { name: 'Tucson, AZ', state: 'AZ', slug: 'tucson', stateSlug: 'az', href: '/az/tucson/boxing-gyms-with-free-trials' },
   ]
 
   return (
@@ -90,7 +91,7 @@ export default function FreeTrialGymsHub() {
                 className="group p-6 bg-white border-2 border-gray-200 rounded-lg hover:border-fight-red hover:shadow-lg transition-all text-center"
               >
                 <div className="text-xl font-bold text-black group-hover:text-fight-red transition-colors mb-2">
-                  {city.name}, {city.state}
+                  {city.name}
                 </div>
                 <div className="text-sm text-gray-600">
                   View Free Trial Gyms →

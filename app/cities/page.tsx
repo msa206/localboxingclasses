@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
 import Breadcrumbs from '@/components/Breadcrumbs'
-import { getAllCities, getStates } from '@/lib/data'
+import { getAllCitiesForDirectory, getStates } from '@/lib/data'
 
 export const metadata: Metadata = {
   title: 'Boxing Classes by City',
@@ -11,9 +11,9 @@ export const metadata: Metadata = {
 const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
 
 export default async function CitiesPage() {
-  // Fetch real cities data from database
+  // Fetch real cities data from database (all cities, not limited to top 10)
   const [allCities, statesData] = await Promise.all([
-    getAllCities(),
+    getAllCitiesForDirectory(),
     getStates()
   ])
 
