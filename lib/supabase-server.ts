@@ -15,5 +15,8 @@ export const supabaseServer = createClient(
       persistSession: false,
       autoRefreshToken: false,
     },
+    db: {
+      schema: 'lbc',
+    },
   }
 )

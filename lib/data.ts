@@ -70,7 +70,7 @@ const abbreviationToState: Record<string, string> = Object.entries(stateAbbrevia
 export async function getStates(): Promise<StateData[]> {
   try {
     const { data, error } = await supabaseClient
-      .from('lbc_boxing_gyms')
+      .from('boxing_gyms')
       .select('state')
       .not('state', 'is', null)
 
@@ -117,7 +117,7 @@ export async function getGymsByState(stateSlug: string): Promise<Gym[]> {
     const stateAbbr = stateAbbreviations[stateName]
 
     const { data, error } = await supabaseClient
-      .from('lbc_boxing_gyms')
+      .from('boxing_gyms')
       .select('*')
       .eq('state', stateAbbr)
       .order('city', { ascending: true })
@@ -148,7 +148,7 @@ export async function getGymsByCity(stateSlug: string, citySlug: string): Promis
     const stateAbbr = stateAbbreviations[stateName]
 
     const { data: allCityGyms, error } = await supabaseClient
-      .from('lbc_boxing_gyms')
+      .from('boxing_gyms')
       .select('*')
       .eq('state', stateAbbr)
 
@@ -171,7 +171,7 @@ export async function getGymsByCity(stateSlug: string, citySlug: string): Promis
 export async function getKidsBoxingGyms(city: string, state: string): Promise<Gym[]> {
   try {
     const { data, error } = await supabaseClient
-      .from('lbc_boxing_gyms')
+      .from('boxing_gyms')
       .select('*')
       .eq('city', city)
       .eq('state', state)
@@ -194,7 +194,7 @@ export async function getKidsBoxingGyms(city: string, state: string): Promise<Gy
 export async function getFreeTrialGyms(city: string, state: string): Promise<Gym[]> {
   try {
     const { data, error } = await supabaseClient
-      .from('lbc_boxing_gyms')
+      .from('boxing_gyms')
       .select('*')
       .eq('city', city)
       .eq('state', state)
@@ -217,7 +217,7 @@ export async function getFreeTrialGyms(city: string, state: string): Promise<Gym
 export async function getWomenClassesGyms(city: string, state: string): Promise<Gym[]> {
   try {
     const { data, error } = await supabaseClient
-      .from('lbc_boxing_gyms')
+      .from('boxing_gyms')
       .select('*')
       .eq('city', city)
       .eq('state', state)
@@ -250,7 +250,7 @@ export async function getCitiesByState(stateSlug: string): Promise<CityData[]> {
     const stateAbbr = stateAbbreviations[stateName]
 
     const { data, error } = await supabaseClient
-      .from('lbc_boxing_gyms')
+      .from('boxing_gyms')
       .select('city')
       .eq('state', stateAbbr)
       .not('city', 'is', null)
@@ -329,7 +329,7 @@ export async function searchGymsByZip(
 export async function getAllCities(): Promise<CityData[]> {
   try {
     const { data, error } = await supabaseClient
-      .from('lbc_boxing_gyms')
+      .from('boxing_gyms')
       .select('city, state')
       .not('city', 'is', null)
       .not('state', 'is', null)
@@ -446,7 +446,7 @@ export async function getCityBySlug(stateSlug: string, citySlug: string): Promis
 export async function getGymsByStateAbbr(stateAbbr: string): Promise<Gym[]> {
   try {
     const { data, error } = await supabaseClient
-      .from('lbc_boxing_gyms')
+      .from('boxing_gyms')
       .select('*')
       .eq('state', stateAbbr.toUpperCase())
       .order('city', { ascending: true })
@@ -467,7 +467,7 @@ export async function getGymsByStateAbbr(stateAbbr: string): Promise<Gym[]> {
 export async function getCitiesByStateAbbr(stateAbbr: string): Promise<CityData[]> {
   try {
     const { data, error } = await supabaseClient
-      .from('lbc_boxing_gyms')
+      .from('boxing_gyms')
       .select('city')
       .eq('state', stateAbbr.toUpperCase())
       .not('city', 'is', null)
@@ -506,7 +506,7 @@ export async function getCitiesByStateAbbr(stateAbbr: string): Promise<CityData[
 export async function getGymsByCityAbbr(stateAbbr: string, citySlug: string): Promise<Gym[]> {
   try {
     const { data: allCityGyms, error } = await supabaseClient
-      .from('lbc_boxing_gyms')
+      .from('boxing_gyms')
       .select('*')
       .eq('state', stateAbbr.toUpperCase())
 
